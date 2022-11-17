@@ -1,1 +1,24 @@
 
+app:
+  miroBaseUrl: https://miro.com
+
+server:
+  port: 3344
+  forward-headers-strategy: FRAMEWORK
+server.servlet:
+  session.timeout: 168h
+  session.persistent: true
+
+spring.jackson:
+  serialization:
+    indent-output: true
+
+spring.mvc:
+  log-request-details: true
+
+management.server:
+  port: 8098
+management.endpoints.web:
+  exposure.include: "*"
+  base-path: /manage
+
