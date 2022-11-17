@@ -1,5 +1,3 @@
-@import 'mirotone/dist/styles.css';
-
 *,
 *:before,
 *:after {
@@ -18,22 +16,7 @@ html {
 body {
   height: 100%;
   line-height: 1.5;
-  margin: 0;
-  padding: 2rem;
-}
-
-.container {
+  padding: 0 var(--space-medium);
   max-width: 580px;
   margin: 0 auto;
-  background-color: var(--indigo50);
-  padding: var(--space-xxxlarge);
-  border-radius: var(--border-radius-xlarge);
-}
-
-img {
-  max-width: 100%;
-}
-
-.button {
-  text-decoration: none;
 }
