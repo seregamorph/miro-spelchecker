@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="SpelcheckerApplication ssl,local" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <option name="ACTIVE_PROFILES" value="ssl,local" />
+    <module name="spelchecker" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.miro.spelchecker.SpelcheckerApplication" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+      <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/pom.xml" goal="generate-resources" />
+    </method>
+  </configuration>
+</component>
