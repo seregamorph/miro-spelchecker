@@ -35,6 +35,7 @@ build/
 
 # dependencies
 node_modules
+/src/main/webapp/node/
 /.pnp
 .pnp.js
 .next
