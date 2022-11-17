@@ -1,16 +1,14 @@
 import {Tab} from "../types";
 
-export const getTabs = (total: number, selected: number): Tab[] => {
+export const getTabs = (): Tab[] => {
     return [
         {
             id: 'selected',
-            label: 'Selected elements',
-            badge: selected
+            label: 'Selected elements'
         },
         {
             id: 'total',
-            label: 'Board checks',
-            badge: total
+            label: 'Board checks'
         }
     ]
 }

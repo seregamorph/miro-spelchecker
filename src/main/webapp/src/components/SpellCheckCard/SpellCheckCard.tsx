@@ -30,14 +30,14 @@ export const SpellCheckCard: FC<Props> = ({item, check, hideFocus}) => {
     return <section>
         <h4 className="h4"><ContentHighlights highlight={check.content}>{normalizeContent(item.content)}</ContentHighlights></h4>
         <div className="grid">
-            <p className={cn("cs1", "ce8", styles.actions)}>
+            <div className={cn("cs1", "ce8", styles.actions)}>
                 {check.suggestions.map(suggestion => <Button key={suggestion} size="small" type="secondary" onClick={() => fixCheck(suggestion)}>{suggestion}</Button>)}
-            </p>
-            {!hideFocus && <p className={cn("cs10", "ce12", styles.actions)}>
+            </div>
+            {!hideFocus && <div className={cn("cs10", "ce12", "align-self-start",styles.actions)}>
                 <Button type="secondary" size="small" onClick={zoomToElement}>
-                    <span className="icon-eye" />
+                    <span className="icon icon-eye cursor-pointer" />
                 </Button>
-            </p>}
+            </div>}
         </div>
     </section>
 }

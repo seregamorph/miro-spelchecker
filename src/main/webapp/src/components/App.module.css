@@ -5,4 +5,9 @@
 
 .container {
     height: 100vh;
+    grid-template-rows: min-content auto min-content;
+}
+
+.footer {
+    padding: var(--space-xsmall) 0 var(--space-medium) 0;
 }
