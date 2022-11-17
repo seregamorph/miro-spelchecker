@@ -7,6 +7,7 @@ import {useSpellCheck} from "../hooks/useSpellCheck";
 import {linkChecksWithItems} from "../utils/checks";
 import {List} from "./ui/lists/List";
 import {SpellCheckCard} from "./SpellCheckCard/SpellCheckCard";
+import {SupportedLanguage} from "../utils/language";
 
 interface Props {
     active: boolean;
@@ -15,11 +16,12 @@ interface Props {
     switchToAll: () => void;
     onActivate: (fn: () => void) => void;
     className: string;
+    language: SupportedLanguage;
 }
-export const SelectedElementsChecks: FC<Props> = ({ active, items, setItems, switchToAll, onActivate, className}) => {
+export const SelectedElementsChecks: FC<Props> = ({ active, items, setItems, switchToAll, onActivate, className, language}) => {
     useTrackActiveElement(items, setItems);
 
-    const {checks, refetch} = useSpellCheck(items);
+    const {checks, refetch} = useSpellCheck(items, language);
 
     useEffect(() => {
         if (!items.length) {
