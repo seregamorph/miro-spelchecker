@@ -15,6 +15,10 @@ export const App: FC = () => {
     const [activeTab, setActiveTab] = useState(tabs.length ? tabs[0].id : '');
     const [selectedItems, setSelectedItems] = useSelectedElements();
 
+    const setRefreshHandler = useCallback((fn: () => void) => {
+        setRefresh(() => fn)
+    }, [])
+
     const switchToAll = useCallback(() => {
         setActiveTab('total')
     }, []);
@@ -34,12 +38,12 @@ export const App: FC = () => {
                     items={selectedItems}
                     setItems={setSelectedItems}
                     switchToAll={switchToAll}
-                    onActivate={setRefresh}
+                    onActivate={setRefreshHandler}
                     className={cn("cs1", "ce12", styles.wrapper)}
                 />
                 <BoardChecks
                     active={activeTab === 'total'}
-                    onActivate={setRefresh}
+                    onActivate={setRefreshHandler}
                     className={cn("cs1", "ce12", styles.wrapper)}/>
 
                 <footer className={cn("cs1","ce12", "grid", styles.footer)}>
