@@ -20,3 +20,19 @@ body {
   max-width: 580px;
   margin: 0 auto;
 }
+
+p {
+  margin: 0;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.align-self-end {
+  align-self: flex-end;;
+}
+
+.align-self-start {
+  align-self: flex-start;;
+}

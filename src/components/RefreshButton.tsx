@@ -9,7 +9,9 @@ interface Props {
 }
 export const RefreshButton: FC<Props> = ({ isLoading,className,onClick}) => {
     return (<p className={cn("centered", className)}>
-            <Button onClick={onClick} isLoading={isLoading} type="secondary" size="medium">Refresh</Button>
+            <Button onClick={onClick} isLoading={isLoading} type="secondary" size="small">
+                <span className="icon icon-refresh cursor-pointer" />
+            </Button>
         </p>
    )
 }
