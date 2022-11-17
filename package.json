@@ -1,0 +1,26 @@
+{
+  "name": "spellchecker",
+  "version": "0.1.0",
+  "license": "MIT",
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "classnames": "^2.3.2",
+    "mirotone": "4.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "swr": "^1.3.0"
+  },
+  "devDependencies": {
+    "@mirohq/websdk-types": "^2.3.1",
+    "@types/node": "^18.11.9",
+    "@types/react": "18.0.25",
+    "@types/react-dom": "18.0.9",
+    "@vitejs/plugin-react": "^2.2.0",
+    "typescript": "4.8.4",
+    "vite": "3.2.3"
+  }
+}
