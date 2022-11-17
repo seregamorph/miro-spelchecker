@@ -1,15 +1,18 @@
 package com.miro.spelchecker;
 
+import com.google.gson.Gson;
+import org.languagetool.JLanguageTool;
+import org.languagetool.language.BritishEnglish;
+import org.languagetool.rules.RuleMatch;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.net.ssl.HttpsURLConnection;
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class SpelCheckController {
@@ -21,7 +24,7 @@ public class SpelCheckController {
     private static final String mode = "proof";
 
     @GetMapping("/spellcheck")
-    public static String check (@RequestParam(name = "lang") Language language, @RequestParam(name = "text") String text) throws Exception {
+    public String check (@RequestParam(name = "lang") Language language, @RequestParam(name = "text") String text) throws Exception {
         String params = "?mkt=" + language.languageCode + "&mode=" + mode;
 
         URL url = new URL(host + path + params);
@@ -33,6 +36,22 @@ public class SpelCheckController {
         connection.disconnect();
 
         return content.toString();
+    }
+
+    @GetMapping("/languagetool/spellcheck")
+    public String languagetool_check (@RequestParam(name = "lang") Language language, @RequestParam(name = "text") String text) throws Exception {
+
+        JLanguageTool langTool = new JLanguageTool(new BritishEnglish());
+        // comment in to use statistical ngram data:
+        //langTool.activateLanguageModelRules(new File("/data/google-ngram-data"));
+        List<RuleMatch> matches = langTool.check(text);
+        List<LanguageToolMatch> responseMatches = new ArrayList<LanguageToolMatch>();
+
+        for (RuleMatch match : matches) {
+            responseMatches.add(new LanguageToolMatch(match));
+        }
+        Gson gson = new Gson();
+        return gson.toJson(responseMatches);
     }
 
     private static void doRequest(String text, HttpsURLConnection connection) throws IOException {
