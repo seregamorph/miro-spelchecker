@@ -3,12 +3,13 @@ import useSWR from 'swr'
 import {Item} from "@mirohq/websdk-types";
 import {runSpellCheckRequest} from "../utils/api";
 import {getContentFromElements} from "../utils/board";
+import {SupportedLanguage} from "../utils/language";
 
-export const useSpellCheck = (items: Item[]) => {
+export const useSpellCheck = (items: Item[], language: SupportedLanguage) => {
     const cacheKey = useMemo(() => {
         const itemsWithContent = getContentFromElements(items);
-        return itemsWithContent.length ? { items: itemsWithContent } : null;
-    }, [items])
+        return itemsWithContent.length ? { items: itemsWithContent, language } : null;
+    }, [items, language])
 
     const { data, error, mutate } = useSWR(cacheKey, runSpellCheckRequest)
 

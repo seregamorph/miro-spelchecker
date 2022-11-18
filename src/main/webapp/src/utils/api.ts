@@ -1,4 +1,5 @@
 import {ItemContent} from "./board";
+import {SupportedLanguage} from "./language";
 
 export interface SpellCheckResult {
     id: string;
@@ -6,9 +7,17 @@ export interface SpellCheckResult {
     content: string;
     suggestions: string[];
 }
-export const runSpellCheckRequest = ({items}: {items:ItemContent[]}): Promise<SpellCheckResult[]> => {
+
+interface RequestData {
+    items:ItemContent[];
+    language: SupportedLanguage;
+}
+export const runSpellCheckRequest = ({items, language}: RequestData): Promise<SpellCheckResult[]> => {
     return Promise.resolve()
         .then(() => {
+            if (language === "nl-NL") {
+                return [];
+            }
             return items.reduce<SpellCheckResult[]>((acc, item, index) => {
                 if (!item.content.includes('test')) {
                     return acc;

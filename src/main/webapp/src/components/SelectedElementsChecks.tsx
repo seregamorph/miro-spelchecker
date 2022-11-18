@@ -1,12 +1,13 @@
 import {FC, useEffect, useMemo} from "react";
 import {Item} from "@mirohq/websdk-types";
 import cn from 'classnames';
-import {Button} from "./ui/Button";
 import {useTrackActiveElement} from "../hooks/useTrackActiveElement";
 import {useSpellCheck} from "../hooks/useSpellCheck";
 import {linkChecksWithItems} from "../utils/checks";
 import {List} from "./ui/lists/List";
 import {SpellCheckCard} from "./SpellCheckCard/SpellCheckCard";
+import {SupportedLanguage} from "../utils/language";
+import {NoElementsSelected} from "./NoElementsSelected/NoElementsSelected";
 
 interface Props {
     active: boolean;
@@ -15,11 +16,12 @@ interface Props {
     switchToAll: () => void;
     onActivate: (fn: () => void) => void;
     className: string;
+    language: SupportedLanguage;
 }
-export const SelectedElementsChecks: FC<Props> = ({ active, items, setItems, switchToAll, onActivate, className}) => {
+export const SelectedElementsChecks: FC<Props> = ({ active, items, setItems, switchToAll, onActivate, className, language}) => {
     useTrackActiveElement(items, setItems);
 
-    const {checks, refetch} = useSpellCheck(items);
+    const {checks, refetch} = useSpellCheck(items, language);
 
     useEffect(() => {
         if (!items.length) {
@@ -46,12 +48,7 @@ export const SelectedElementsChecks: FC<Props> = ({ active, items, setItems, swi
 
     if (!items.length) {
         return <div className={cn('centered', className)}>
-            <p className="p-medium">
-                Nothing is selected on the board
-            </p>
-            <p>
-                <Button onClick={switchToAll} type="secondary" size="medium">Check all elements</Button>
-            </p>
+            <NoElementsSelected onSwitch={switchToAll}/>
         </div>
     }
 

@@ -1,3 +1,5 @@
+@import "mirotone/dist/styles.css";
+
 *,
 *:before,
 *:after {
@@ -30,9 +32,13 @@ p {
 }
 
 .align-self-end {
-  align-self: flex-end;;
+  align-self: flex-end;
 }
 
 .align-self-start {
-  align-self: flex-start;;
+  align-self: flex-start;
+}
+
+.justify-self--end {
+  justify-self: flex-end;
 }

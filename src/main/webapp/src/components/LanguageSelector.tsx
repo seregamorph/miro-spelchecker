@@ -1,11 +1,19 @@
-export const LanguageSelector = () => {
+import {ChangeEvent, FC, useCallback} from "react";
+import {getValidatedLanguage, SUPPORTED_LANGUAGES, SupportedLanguage} from "../utils/language";
+
+interface Props {
+    language: SupportedLanguage;
+    setLanguage: (lang: SupportedLanguage) => void;
+}
+export const LanguageSelector: FC<Props> = ({language, setLanguage}) => {
+    const onChange = useCallback((event: ChangeEvent<HTMLSelectElement>) => {
+        setLanguage(getValidatedLanguage(event.target.value));
+    }, [setLanguage]);
+
     return (<>
         <label htmlFor="language-selector" className="p-small">Language</label>
-        <select className="select select-small" id="language-selector">
-            <option value="1">Option one</option>
-            <option value="2">Option two</option>
-            <option value="3">Option three</option>
-            <option value="4">Option four</option>
+        <select className="select select-small" id="language-selector" value={language} onChange={onChange}>
+            {SUPPORTED_LANGUAGES.map(lang => <option key={lang.value} value={lang.value}>{lang.label}</option>)}
         </select>
     </>)
 }
