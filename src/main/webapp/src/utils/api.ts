@@ -1,33 +1,33 @@
-import {ItemContent} from "./board";
+import {ElementContent} from "./board";
 import {SupportedLanguage} from "./language";
 
 export interface SpellCheckResult {
-    id: string;
-    itemId: string;
-    content: string;
-    suggestions: string[];
+    elementId: string;
+    fromPos: number;
+    toPos: number;
+    message: string;
+    suggestedReplacements: string[];
 }
 
-interface RequestData {
-    items:ItemContent[];
+export interface RequestData {
+    elements: ElementContent[];
     language: SupportedLanguage;
 }
-export const runSpellCheckRequest = ({items, language}: RequestData): Promise<SpellCheckResult[]> => {
-    return Promise.resolve()
-        .then(() => {
-            if (language === "nl-NL") {
-                return [];
+export const runSpellCheckRequest = (payload: RequestData): Promise<SpellCheckResult[]> => {
+    const url = new URL('/spellcheck', document.location.href);
+
+    return fetch(url, {
+        method: 'POST',
+        body: JSON.stringify(payload),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Something went wrong');
             }
-            return items.reduce<SpellCheckResult[]>((acc, item, index) => {
-                if (!item.content.includes('test')) {
-                    return acc;
-                }
-                return [...acc, {
-                    id: `${index}`,
-                    itemId: item.id,
-                    content: 'test',
-                    suggestions: ['ttest', 'tst']
-                }];
-            }, [])
+
+            return response.json();
         })
 }

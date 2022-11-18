@@ -1,4 +1,4 @@
-import {getBrowserLanguage} from "./browser";
+import {getBrowserLanguages, LocalStorageKey, setLocalStorageItem} from "./browser";
 
 export const SUPPORTED_LANGUAGES = [
     {
@@ -6,8 +6,24 @@ export const SUPPORTED_LANGUAGES = [
         label: 'English'
     },
     {
-        value: 'nl-NL',
-        label: 'Dutch'
+        value: 'es-ES',
+        label: 'Spanish'
+    },
+    {
+        value: 'de',
+        label: 'German'
+    },
+    {
+        value: 'ru-RU',
+        label: 'Russian'
+    },
+    {
+        value: 'fr-FR',
+        label: 'French'
+    },
+    {
+        value: 'jp-JP',
+        label: 'Japanese'
     }
 ] as const;
 
@@ -15,14 +31,22 @@ export type SupportedLanguage = typeof SUPPORTED_LANGUAGES[number]['value'];
 
 const DEFAULT_LANGUAGE: SupportedLanguage = 'en-US';
 
-const isLanguageSupported = (lang: string): lang is SupportedLanguage => {
-    return SUPPORTED_LANGUAGES.map(({value}) => value).some(supportedLang => supportedLang === lang);
+const isLanguageSupported = (lang?: string): lang is SupportedLanguage => {
+    if (!lang) {
+        return false;
+    }
+    return SUPPORTED_LANGUAGES.some(({value}) => value === lang);
 }
 
-export const getValidatedLanguage = (lang = getBrowserLanguage()): SupportedLanguage => {
-    if (isLanguageSupported(lang)) {
-        return lang;
+export const getValidatedLanguage = (languages: string | string[] = getBrowserLanguages()): SupportedLanguage => {
+    const langs = typeof languages === 'string' ? [languages] : languages;
+    const language = langs.find(lang => isLanguageSupported(lang));
+    if (isLanguageSupported(language)) {
+        return language
     }
-
     return DEFAULT_LANGUAGE;
+}
+
+export const saveLanguageSelection = (lang: SupportedLanguage) => {
+    setLocalStorageItem(LocalStorageKey.Language, lang);
 }

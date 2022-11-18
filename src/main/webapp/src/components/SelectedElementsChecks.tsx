@@ -8,6 +8,7 @@ import {List} from "./ui/lists/List";
 import {SpellCheckCard} from "./SpellCheckCard/SpellCheckCard";
 import {SupportedLanguage} from "../utils/language";
 import {NoElementsSelected} from "./NoElementsSelected/NoElementsSelected";
+import {StatusWrapper} from "./StatusWrapper/StatusWrapper";
 
 interface Props {
     active: boolean;
@@ -21,7 +22,7 @@ interface Props {
 export const SelectedElementsChecks: FC<Props> = ({ active, items, setItems, switchToAll, onActivate, className, language}) => {
     useTrackActiveElement(items, setItems);
 
-    const {checks, refetch} = useSpellCheck(items, language);
+    const {checks, refetch, isLoading, isError } = useSpellCheck(items, language);
 
     useEffect(() => {
         if (!items.length) {
@@ -53,8 +54,12 @@ export const SelectedElementsChecks: FC<Props> = ({ active, items, setItems, swi
     }
 
     return (
-        <List className={className}>
-            {list.map(({check, item}) => <li key={check.id}><SpellCheckCard check={check} item={item} hideFocus/></li>)}
-        </List>
+        <StatusWrapper isError={isError} isLoading={isLoading} className={className} count={list.length}>
+            <List className={className}>
+                {list.map(({check, item}) => <li key={`${check.elementId}-${check.fromPos}`}>
+                    <SpellCheckCard check={check} item={item} hideFocus/>
+                </li>)}
+            </List>
+        </StatusWrapper>
     );
 }
