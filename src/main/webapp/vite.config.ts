@@ -3,6 +3,7 @@ import fs from 'fs';
 import dns from 'dns';
 import {defineConfig} from 'vite';
 import react from '@vitejs/plugin-react';
+import mkcert from 'vite-plugin-mkcert'
 
 // https://vitejs.dev/config/server-options.html#server-host
 dns.setDefaultResultOrder('verbatim');
@@ -24,8 +25,9 @@ export default defineConfig({
       input: allHtmlEntries,
     },
   },
-  plugins: [react()],
+  plugins: [react(), mkcert()],
   server: {
     port: 3344,
+    https: true
   },
 });

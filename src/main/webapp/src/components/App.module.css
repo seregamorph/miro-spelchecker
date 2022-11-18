@@ -9,5 +9,5 @@
 }
 
 .footer {
-    padding: var(--space-xsmall) 0 var(--space-medium) 0;
+    padding: 0 0 var(--space-medium) 0;
 }
