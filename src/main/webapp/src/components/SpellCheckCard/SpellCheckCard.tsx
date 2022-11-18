@@ -29,7 +29,6 @@ export const SpellCheckCard: FC<Props> = ({item, check, hideFocus}) => {
     }
 
     const suggestions = check.suggestedReplacements.slice(0, MAX_SUGGESTIONS_COUNT)
-    // TODO trim the item.content to have ~10chars around the spelling error
 
     return <section>
         <h4 className="h4"><ContentHighlights check={check}>{normalizeContent(item.content)}</ContentHighlights></h4>
