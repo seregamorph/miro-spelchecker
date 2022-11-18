@@ -1,3 +1,5 @@
+@import "mirotone/dist/styles.css";
+
 *,
 *:before,
 *:after {
@@ -19,4 +21,24 @@ body {
   padding: 0 var(--space-medium);
   max-width: 580px;
   margin: 0 auto;
+}
+
+p {
+  margin: 0;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.align-self-end {
+  align-self: flex-end;
+}
+
+.align-self-start {
+  align-self: flex-start;
+}
+
+.justify-self--end {
+  justify-self: flex-end;
 }
