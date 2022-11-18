@@ -1,11 +1,18 @@
 import {FC} from "react";
+import { SpellCheckResult } from "../../utils/api";
 import styles from './ContentHighlights.module.css';
 
 interface Props {
-    highlight: string;
+    check: SpellCheckResult;
     children: string;
 }
-export const ContentHighlights: FC<Props> = ({ highlight, children }) => {
-    const parts = children.split(highlight);
-    return <>{parts.map((part, index) => <span key={index}>{index ? <span className={styles.highlight}>{highlight}</span> : null}{part}</span>)}</>
+export const ContentHighlights: FC<Props> = ({ check, children }) => {
+    const start = children.slice(0, check.fromPos);
+    const message = children.slice(check.fromPos, check.toPos);
+    const end = children.slice(check.toPos);
+    return <>
+        <span>{start}</span>
+        <span className={styles.highlight}>{message}</span>
+        <span>{end}</span>
+    </>
 }

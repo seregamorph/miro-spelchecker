@@ -55,7 +55,7 @@ export const BoardChecks: FC<Props> = ({ active, onActivate, className, language
 
     return (
             <List className={className}>
-                {list.map(({check, item}) => (<li key={check.id}>
+                {list.map(({check, item}) => (<li key={`${check.elementId}-${check.fromPos}`}>
                     <SpellCheckCard check={check} item={item}/>
                 </li>))}
             </List>

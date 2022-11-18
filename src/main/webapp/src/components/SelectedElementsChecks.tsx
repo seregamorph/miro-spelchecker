@@ -54,7 +54,7 @@ export const SelectedElementsChecks: FC<Props> = ({ active, items, setItems, swi
 
     return (
         <List className={className}>
-            {list.map(({check, item}) => <li key={check.id}><SpellCheckCard check={check} item={item} hideFocus/></li>)}
+            {list.map(({check, item}) => <li key={`${check.elementId}-${check.fromPos}`}><SpellCheckCard check={check} item={item} hideFocus/></li>)}
         </List>
     );
 }

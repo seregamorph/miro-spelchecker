@@ -1,6 +1,6 @@
-export const getBrowserLanguage = () => {
+export const getBrowserLanguages = (): string[] => {
     if (navigator.languages && navigator.languages.length) {
-        return navigator.languages[0];
+        return [...navigator.languages];
     }
-    return navigator.language;
+    return [navigator.language];
 }
