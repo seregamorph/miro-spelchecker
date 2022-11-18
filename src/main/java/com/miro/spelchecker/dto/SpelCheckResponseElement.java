@@ -1,4 +1,4 @@
-package com.miro.spelchecker;
+package com.miro.spelchecker.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,17 +9,23 @@ import java.util.List;
 
 @Getter
 @Setter
-public class LanguageToolMatch {
+public class SpelCheckResponseElement {
+    private Long elementId;
     private int fromPos;
     private int toPos;
     private String message;
     private List<String> suggestedReplacements;
 
-    public LanguageToolMatch(RuleMatch match){
+    public SpelCheckResponseElement(RuleMatch match){
         this.setFromPos(match.getFromPos());
         this.setToPos(match.getToPos());
         this.setMessage(match.getMessage());
         this.setSuggestedReplacements(match.getSuggestedReplacements());
+    }
+
+    public SpelCheckResponseElement(Long elementId, RuleMatch match){
+        this(match);
+        this.setElementId(elementId);
     }
 
 }
