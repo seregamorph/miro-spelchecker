@@ -6,6 +6,7 @@ import {SpellCheckCard} from "./SpellCheckCard/SpellCheckCard";
 import {List} from "./ui/lists/List";
 import {linkChecksWithItems} from "../utils/checks";
 import {SupportedLanguage} from "../utils/language";
+import {StatusWrapper} from "./StatusWrapper/StatusWrapper";
 
 interface Props {
     active: boolean;
@@ -16,7 +17,7 @@ interface Props {
 export const BoardChecks: FC<Props> = ({ active, onActivate, className, language}) => {
     const [items, setItems] = useState<Item[]>([]);
 
-    const { checks, refetch } = useSpellCheck(items, language);
+    const { checks, refetch, isLoading, isError } = useSpellCheck(items, language);
 
     const onRefresh = useCallback(() => {
         miro.board.get({ type: OBJECTS_WITH_CONTENT})
@@ -54,10 +55,12 @@ export const BoardChecks: FC<Props> = ({ active, onActivate, className, language
     }
 
     return (
+        <StatusWrapper isError={isError} isLoading={isLoading} className={className} count={list.length}>
             <List className={className}>
                 {list.map(({check, item}) => (<li key={`${check.elementId}-${check.fromPos}`}>
                     <SpellCheckCard check={check} item={item}/>
                 </li>))}
             </List>
+        </StatusWrapper>
     );
 }

@@ -1,0 +1,7 @@
+.subtext {
+    color: var(--indigo500);
+}
+
+.danger {
+    color: var(--red600);
+}
