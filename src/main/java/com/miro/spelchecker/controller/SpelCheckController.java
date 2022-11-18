@@ -1,24 +1,24 @@
 package com.miro.spelchecker.controller;
 
-import com.google.gson.Gson;
 import com.miro.spelchecker.dto.LanguageFactory;
-import com.miro.spelchecker.dto.SpelCheckResponseElement;
 import com.miro.spelchecker.dto.SpelCheckRequest;
+import com.miro.spelchecker.dto.SpelCheckResponseElement;
 import org.languagetool.JLanguageTool;
 import org.languagetool.rules.RuleMatch;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 public class SpelCheckController {
 
-    private final Gson gson = new Gson();
-
     @GetMapping("/spellcheck")
-    public String spellcheck (@RequestParam(name = "lang") String language, @RequestParam(name = "text") String text) throws Exception {
+    public List<SpelCheckResponseElement> spellcheck(
+            @RequestParam(name = "lang", defaultValue = "en-US") String language,
+            @RequestParam(name = "text") String text) throws IOException
+    {
 
         JLanguageTool langTool = new JLanguageTool(LanguageFactory.getLanguage(language));
         // comment in to use statistical ngram data:
@@ -30,11 +30,11 @@ public class SpelCheckController {
             responseMatches.add(new SpelCheckResponseElement(match));
         }
 
-        return gson.toJson(responseMatches);
+        return responseMatches;
     }
 
     @PostMapping("/spellcheck")
-        public String languagetool_check (@RequestBody SpelCheckRequest input) {
+    public List<SpelCheckResponseElement> languagetool_check(@RequestBody SpelCheckRequest input) {
 
         JLanguageTool langTool = new JLanguageTool(LanguageFactory.getLanguage(input.getLanguage()));
 
@@ -42,12 +42,12 @@ public class SpelCheckController {
         input.getElements().forEach(element -> {
             try {
                 var matches = langTool.check(element.getText());
-                matches.forEach( match -> responseMatches.add(new SpelCheckResponseElement(element.getElementId(),match)));
+                matches.forEach(match -> responseMatches.add(new SpelCheckResponseElement(element.getElementId(), match)));
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
 
-        return gson.toJson(responseMatches);
+        return responseMatches;
     }
 }

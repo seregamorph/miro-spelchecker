@@ -14,7 +14,7 @@ public class LanguageFactory {
             case "ru-RU" -> new Russian();
             case "fr-FR" -> new French();
             case "jp-JP" -> new Japanese();
-            default ->  new AmericanEnglish();
+            default -> new AmericanEnglish();
         };
     }
 }

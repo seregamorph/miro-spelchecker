@@ -5,12 +5,11 @@
 This is a Spring Boot application. To run it execute the main method of com.miro.spelchecker.SpelcheckerApplication. Or: 
 
 ```shell
-mvn spring-boot:run
+./mvnw clean spring-boot:run -Dspring-boot.run.profiles=ssl,local
 ```
 
-
 ## Sample GET Request
-http://localhost:8080/spellcheck?lang=EN_US&text=hollo%20tere
+[/spellcheck?lang=en-US&text=hollo%20tere](https://localhost:3344/spellcheck?lang=en-US&text=hollo%20tere)
 
 ## Sample Output
 
