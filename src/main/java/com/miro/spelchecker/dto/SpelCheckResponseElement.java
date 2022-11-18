@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 public class SpelCheckResponseElement {
-    private Long elementId;
+    private String elementId;
     private int fromPos;
     private int toPos;
     private String message;
@@ -23,7 +23,7 @@ public class SpelCheckResponseElement {
         this.setSuggestedReplacements(match.getSuggestedReplacements());
     }
 
-    public SpelCheckResponseElement(Long elementId, RuleMatch match){
+    public SpelCheckResponseElement(String elementId, RuleMatch match){
         this(match);
         this.setElementId(elementId);
     }
