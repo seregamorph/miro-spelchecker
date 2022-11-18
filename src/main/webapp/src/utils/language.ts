@@ -1,4 +1,4 @@
-import { getBrowserLanguages } from "./browser";
+import {getBrowserLanguages, LocalStorageKey, setLocalStorageItem} from "./browser";
 
 export const SUPPORTED_LANGUAGES = [
     {
@@ -45,4 +45,8 @@ export const getValidatedLanguage = (languages: string | string[] = getBrowserLa
         return language
     }
     return DEFAULT_LANGUAGE;
+}
+
+export const saveLanguageSelection = (lang: SupportedLanguage) => {
+    setLocalStorageItem(LocalStorageKey.Language, lang);
 }

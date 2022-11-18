@@ -1,5 +1,5 @@
 import {ChangeEvent, FC, useCallback} from "react";
-import {getValidatedLanguage, SUPPORTED_LANGUAGES, SupportedLanguage} from "../utils/language";
+import {getValidatedLanguage, saveLanguageSelection, SUPPORTED_LANGUAGES, SupportedLanguage} from "../utils/language";
 
 interface Props {
     language: SupportedLanguage;
@@ -7,7 +7,9 @@ interface Props {
 }
 export const LanguageSelector: FC<Props> = ({language, setLanguage}) => {
     const onChange = useCallback((event: ChangeEvent<HTMLSelectElement>) => {
-        setLanguage(getValidatedLanguage(event.target.value));
+        const lang = getValidatedLanguage(event.target.value);
+        setLanguage(lang);
+        saveLanguageSelection(lang);
     }, [setLanguage]);
 
     return (<>
