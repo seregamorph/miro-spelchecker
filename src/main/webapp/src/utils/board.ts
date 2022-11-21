@@ -17,13 +17,13 @@ export const getBoardObjectsWithContent = (items: BoardNode[]): Item[] => {
     }, [])
 }
 
-export interface ItemContent {
-    id: string;
-    content: string;
+export interface ElementContent {
+    elementId: string;
+    text: string;
 }
 
-export const getContentFromElements = (items: Item[]): ItemContent[] => {
-    return items.reduce<ItemContent[]>((acc, item) => {
+export const getContentFromElements = (items: Item[]): ElementContent[] => {
+    return items.reduce<ElementContent[]>((acc, item) => {
         if (!isObjectWithContent(item)) {
             return acc;
         }
@@ -35,8 +35,8 @@ export const getContentFromElements = (items: Item[]): ItemContent[] => {
         return [
             ...acc,
             {
-                id: item.id,
-                content: item.content
+                elementId: item.id,
+                text: item.content
             }
         ]
     }, [])

@@ -1,3 +1,7 @@
 .highlight {
-    color: red;
+    background-color: var(--yellow700);
+}
+
+.text {
+    color: var(--blackAlpha60);
 }
