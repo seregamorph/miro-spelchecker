@@ -1,0 +1,8 @@
+.header {
+    margin: 0;
+    padding: var(--space-small);
+}
+
+.card {
+    padding-top: var(--space-small);
+}

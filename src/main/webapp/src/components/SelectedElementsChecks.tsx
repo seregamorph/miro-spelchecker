@@ -4,11 +4,10 @@ import cn from 'classnames';
 import {useTrackActiveElement} from "../hooks/useTrackActiveElement";
 import {useSpellCheck} from "../hooks/useSpellCheck";
 import {linkChecksWithItems} from "../utils/checks";
-import {List} from "./ui/lists/List";
-import {SpellCheckCard} from "./SpellCheckCard/SpellCheckCard";
 import {SupportedLanguage} from "../utils/language";
 import {NoElementsSelected} from "./NoElementsSelected/NoElementsSelected";
 import {StatusWrapper} from "./StatusWrapper/StatusWrapper";
+import {SpellCheckerCardList} from "./SpellCheckerCardList";
 
 interface Props {
     active: boolean;
@@ -18,8 +17,9 @@ interface Props {
     onActivate: (fn: () => void) => void;
     className: string;
     language: SupportedLanguage;
+    heightShift: number;
 }
-export const SelectedElementsChecks: FC<Props> = ({ active, items, setItems, switchToAll, onActivate, className, language}) => {
+export const SelectedElementsChecks: FC<Props> = ({ active, items, setItems, switchToAll, onActivate, className, language, heightShift}) => {
     useTrackActiveElement(items, setItems);
 
     const {checks, refetch, isLoading, isError } = useSpellCheck(items, language);
@@ -55,11 +55,7 @@ export const SelectedElementsChecks: FC<Props> = ({ active, items, setItems, swi
 
     return (
         <StatusWrapper isError={isError} isLoading={isLoading} className={className} count={list.length}>
-            <List className={className}>
-                {list.map(({check, item}) => <li key={`${check.elementId}-${check.fromPos}`}>
-                    <SpellCheckCard check={check} item={item} hideFocus/>
-                </li>)}
-            </List>
+            <SpellCheckerCardList className={className} items={list} hideFocus heightShift={heightShift}/>
         </StatusWrapper>
     );
 }
