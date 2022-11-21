@@ -58,16 +58,23 @@ public class SpelCheckController {
 
                 var indexMapping = new HashMap<Integer,TextNode>();
 
+                // Jsoup parses the dom tree into nodes, all nodes that contain text are textnodes.
+                // indexMapping map stores <start position of the text node within plain text, textNode>
+                // textNodes know their start positions in the original input.
+                // with the help of indexmapping, we can calculate the error position in the original input.
                 String plainText = JsoupHelper.getPlainText(doc,indexMapping);
                 var matches = langTool.check(plainText);
 
                 matches.forEach(match ->
                 {
-                    //Calculate how much index changes
+                    //Calculate how much index changes: find the textnode that this match is contained in.
+                    //calculate the difference between its start index in the plaintext vs in the original html.
                     Optional<Map.Entry<Integer, TextNode>> first = indexMapping.entrySet().stream().filter(x -> x.getKey()-1 <= match.getFromPos() && x.getKey() + x.getValue().text().length() >= match.getToPos()).findFirst();
                     if (first.isEmpty()){
                         throw new RuntimeException(); // Add exception.
                     }
+
+                    //Find number of html-encoded characters within the text node & before the error position.
                     int count = (int) countNumberOfOccurrences(plainText.substring(first.get().getKey()-1,match.getFromPos()), charsToBeEncoded);
                     int indexShift = first.get().getValue().sourceRange().start().columnNumber() - first.get().getKey() + (count)*4 ;
 
