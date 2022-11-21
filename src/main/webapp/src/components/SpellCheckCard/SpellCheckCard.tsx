@@ -7,6 +7,7 @@ import {applySuggestion} from "../../utils/checks";
 import {isObjectWithContent} from "../../utils/board";
 import {normalizeContent} from "../../utils/content";
 import {ContentHighlights} from "../ContentHighlights/ContentHighlights";
+import styles from './SpellCheckCard.module.css';
 
 const MAX_SUGGESTIONS_COUNT = 3;
 
@@ -15,7 +16,7 @@ interface Props {
     item: Item;
     hideFocus?: boolean;
 }
-export const SpellCheckCard: FC<Props> = ({item, check, hideFocus}) => {
+export const SpellCheckCard: FC<Props> = (({item, check, hideFocus}) => {
     const zoomToElement = () => {
         miro.board.viewport.zoomTo(item)
     };
@@ -29,10 +30,9 @@ export const SpellCheckCard: FC<Props> = ({item, check, hideFocus}) => {
     }
 
     const suggestions = check.suggestedReplacements.slice(0, MAX_SUGGESTIONS_COUNT)
-    // TODO trim the item.content to have ~10chars around the spelling error
 
-    return <section>
-        <h4 className="h4"><ContentHighlights check={check}>{normalizeContent(item.content)}</ContentHighlights></h4>
+    return <section className={styles.card}>
+        <h4 className={cn("h4", styles.header)}><ContentHighlights check={check}>{normalizeContent(item.content)}</ContentHighlights></h4>
         <div className="grid">
             <p className={cn("cs1", "ce8", "align-self-end", {'p-small': !suggestions.length})} >
                 {suggestions.map(suggestion => (
@@ -47,4 +47,4 @@ export const SpellCheckCard: FC<Props> = ({item, check, hideFocus}) => {
             </p>}
         </div>
     </section>
-}
+});

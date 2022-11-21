@@ -1,13 +1,13 @@
 import {FC, StrictMode, useCallback, useMemo, useState} from 'react';
 import cn from 'classnames';
-import {Tabs} from "./ui/tabs/Tabs";
-import {getTabs} from "../utils/tabs";
-import {SelectedElementsChecks} from "./SelectedElementsChecks";
-import {BoardChecks} from "./BoardChecks";
-import {useSelectedElements} from "../hooks/useSelectedElements";
-import {LanguageSelector} from "./LanguageSelector";
-import {RefreshButton} from "./RefreshButton";
-import {getValidatedLanguage} from "../utils/language";
+import {Tabs} from "../ui/tabs/Tabs";
+import {getTabs} from "../../utils/tabs";
+import {SelectedElementsChecks} from "../SelectedElementsChecks";
+import {BoardChecks} from "../BoardChecks";
+import {useSelectedElements} from "../../hooks/useSelectedElements";
+import {LanguageSelector} from "../LanguageSelector";
+import {RefreshButton} from "../RefreshButton";
+import {getValidatedLanguage} from "../../utils/language";
 import styles from './App.module.css';
 
 export const App: FC = () => {
@@ -16,6 +16,7 @@ export const App: FC = () => {
     const [activeTab, setActiveTab] = useState(tabs.length ? tabs[0].id : '');
     const [selectedItems, setSelectedItems] = useSelectedElements();
     const [language, setLanguage] = useState(getValidatedLanguage);
+
     const setRefreshHandler = useCallback((fn: () => void) => {
         setRefresh(() => fn)
     }, [])

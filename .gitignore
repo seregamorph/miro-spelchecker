@@ -53,7 +53,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
-.env
+src/main/webapp/.env
 dist
 
 application-local*.*

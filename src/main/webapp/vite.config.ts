@@ -12,11 +12,10 @@ dns.setDefaultResultOrder('verbatim');
 const allHtmlEntries = fs
   .readdirSync('.')
   .filter((file) => path.extname(file) === '.html')
-  .reduce((acc, file) => {
-    acc[path.basename(file, '.html')] = path.resolve(__dirname, file);
-
-    return acc;
-  }, {});
+  .reduce<Record<string, string>>((acc, file) => ({
+    ...acc,
+    [path.basename(file, '.html')]: path.resolve(__dirname, file)
+  }), {});
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -25,6 +24,7 @@ export default defineConfig({
       input: allHtmlEntries,
     },
   },
+  envPrefix: 'SPELLCHECK_',
   plugins: [react(), mkcert()],
   server: {
     port: 3344,

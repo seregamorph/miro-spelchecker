@@ -2,11 +2,10 @@ import {FC, useCallback, useEffect, useMemo, useState} from "react";
 import { Item } from "@mirohq/websdk-types";
 import {getBoardObjectsWithContent, OBJECTS_WITH_CONTENT} from "../utils/board";
 import {useSpellCheck} from "../hooks/useSpellCheck";
-import {SpellCheckCard} from "./SpellCheckCard/SpellCheckCard";
-import {List} from "./ui/lists/List";
 import {linkChecksWithItems} from "../utils/checks";
 import {SupportedLanguage} from "../utils/language";
 import {StatusWrapper} from "./StatusWrapper/StatusWrapper";
+import {SpellCheckerCardList} from "./SpellCheckerCardList/SpellCheckerCardList";
 
 interface Props {
     active: boolean;
@@ -56,11 +55,7 @@ export const BoardChecks: FC<Props> = ({ active, onActivate, className, language
 
     return (
         <StatusWrapper isError={isError} isLoading={isLoading} className={className} count={list.length}>
-            <List className={className}>
-                {list.map(({check, item}) => (<li key={`${check.elementId}-${check.fromPos}`}>
-                    <SpellCheckCard check={check} item={item}/>
-                </li>))}
-            </List>
+            <SpellCheckerCardList className={className} items={list}/>
         </StatusWrapper>
     );
 }

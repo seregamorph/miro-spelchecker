@@ -2,7 +2,7 @@ import {Item} from "@mirohq/websdk-types";
 import {SpellCheckResult} from "./api";
 import {isObjectWithContent} from "./board";
 
-interface SpellCheckList {
+export interface SpellCheckList {
     check: SpellCheckResult;
     item: Item;
 }

@@ -14,7 +14,8 @@ export interface RequestData {
     language: SupportedLanguage;
 }
 export const runSpellCheckRequest = (payload: RequestData): Promise<SpellCheckResult[]> => {
-    const url = new URL('/spellcheck', document.location.href);
+    const apiHost = import.meta.env.SPELLCHECK_API_HOST || document.location.href;
+    const url = new URL('/spellcheck', apiHost);
 
     return fetch(url, {
         method: 'POST',
