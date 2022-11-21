@@ -78,7 +78,8 @@ public class SpelCheckController {
                     int count = (int) countNumberOfOccurrences(plainText.substring(first.get().getKey()-1,match.getFromPos()), charsToBeEncoded);
                     int indexShift = first.get().getValue().sourceRange().start().columnNumber() - first.get().getKey() + (count)*4 ;
 
-                    responseMatches.add(new SpelCheckResponseElement(element.getElementId(), match, indexShift, plainText));
+                    int countInside = (int) countNumberOfOccurrences(plainText.substring(match.getFromPos(), match.getToPos()), charsToBeEncoded);
+                    responseMatches.add(new SpelCheckResponseElement(element.getElementId(), match, indexShift, plainText, countInside*4));
 
                 });
             } catch (IOException e) {

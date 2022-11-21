@@ -16,7 +16,8 @@ public class SpelCheckResponseElement {
     private int toPosPlain;
     private String message;
     private List<String> suggestedReplacements;
-    private int indexShift;
+    private int indexShiftStart;
+    private int indexShiftEnd;
 
     public SpelCheckResponseElement(RuleMatch match){
         this.setFromPosPlain(match.getFromPos());
@@ -29,18 +30,19 @@ public class SpelCheckResponseElement {
         }
     }
 
-    public SpelCheckResponseElement(String elementId, RuleMatch match, int indexShift, String plainText){
+    public SpelCheckResponseElement(String elementId, RuleMatch match, int indexShiftStart, String plainText, int indexShiftEnd){
         this(match);
         this.setElementId(elementId);
-        this.indexShift = indexShift;
+        this.indexShiftStart = indexShiftStart;
+        this.indexShiftEnd = indexShiftEnd;
         this.plainText = plainText;
     }
 
     public int getFromPos() {
-        return fromPosPlain + indexShift - 1;
+        return fromPosPlain + indexShiftStart - 1;
     }
 
     public int getToPos() {
-        return toPosPlain + indexShift - 1 ;
+        return toPosPlain + indexShiftStart + indexShiftEnd - 1 ;
     }
 }
