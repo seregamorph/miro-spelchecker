@@ -1,4 +1,4 @@
-import {FC, useEffect, useMemo} from "react";
+import {FC, useCallback, useEffect, useMemo} from "react";
 import {Item} from "@mirohq/websdk-types";
 import cn from 'classnames';
 import {useTrackActiveElement} from "../hooks/useTrackActiveElement";
@@ -8,6 +8,7 @@ import {SupportedLanguage} from "../utils/language";
 import {NoElementsSelected} from "./NoElementsSelected/NoElementsSelected";
 import {StatusWrapper} from "./StatusWrapper/StatusWrapper";
 import {SpellCheckerCardList} from "./SpellCheckerCardList/SpellCheckerCardList";
+import {getBoardObjectsWithContent} from "../utils/board";
 
 interface Props {
     active: boolean;
@@ -23,6 +24,14 @@ export const SelectedElementsChecks: FC<Props> = ({ active, items, setItems, swi
 
     const {checks, refetch, isLoading, isError } = useSpellCheck(items, language);
 
+    const onRefresh = useCallback(() => {
+        miro.board.get({ id: items.map(({id}) => id)})
+            .then(boardItems => {
+                const itemsWithContent = getBoardObjectsWithContent(boardItems);
+                setItems(itemsWithContent);
+            })
+    }, [items, setItems]);
+
     useEffect(() => {
         if (!items.length) {
             return;
@@ -35,8 +44,8 @@ export const SelectedElementsChecks: FC<Props> = ({ active, items, setItems, swi
             return;
         }
 
-        onActivate(refetch)
-    }, [active, onActivate, refetch])
+        onActivate(onRefresh)
+    }, [active, onActivate, onRefresh])
 
     const list = useMemo(() => {
         return linkChecksWithItems(checks || [], items);
