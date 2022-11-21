@@ -4,6 +4,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+###Ngram Statistics Data
+!**/data/
+
 ### STS ###
 .apt_generated
 .classpath
