@@ -1,7 +1,6 @@
 .wrapper {
-    /* The only way to override the height for react-virtualized-auto-sizer container and fit the content */
-    height: 100% !important;
-    overflow-y: auto;
+    height: 100%;
+    overflow: auto;
 }
 
 .container {

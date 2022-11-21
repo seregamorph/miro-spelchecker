@@ -7,7 +7,7 @@ import {linkChecksWithItems} from "../utils/checks";
 import {SupportedLanguage} from "../utils/language";
 import {NoElementsSelected} from "./NoElementsSelected/NoElementsSelected";
 import {StatusWrapper} from "./StatusWrapper/StatusWrapper";
-import {SpellCheckerCardList} from "./SpellCheckerCardList";
+import {SpellCheckerCardList} from "./SpellCheckerCardList/SpellCheckerCardList";
 
 interface Props {
     active: boolean;
@@ -17,9 +17,8 @@ interface Props {
     onActivate: (fn: () => void) => void;
     className: string;
     language: SupportedLanguage;
-    heightShift: number;
 }
-export const SelectedElementsChecks: FC<Props> = ({ active, items, setItems, switchToAll, onActivate, className, language, heightShift}) => {
+export const SelectedElementsChecks: FC<Props> = ({ active, items, setItems, switchToAll, onActivate, className, language}) => {
     useTrackActiveElement(items, setItems);
 
     const {checks, refetch, isLoading, isError } = useSpellCheck(items, language);
@@ -55,7 +54,7 @@ export const SelectedElementsChecks: FC<Props> = ({ active, items, setItems, swi
 
     return (
         <StatusWrapper isError={isError} isLoading={isLoading} className={className} count={list.length}>
-            <SpellCheckerCardList className={className} items={list} hideFocus heightShift={heightShift}/>
+            <SpellCheckerCardList className={className} items={list} hideFocus/>
         </StatusWrapper>
     );
 }

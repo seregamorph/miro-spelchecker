@@ -1,4 +1,4 @@
-import {FC, StrictMode, useCallback, useMemo, useRef, useState} from 'react';
+import {FC, StrictMode, useCallback, useMemo, useState} from 'react';
 import cn from 'classnames';
 import {Tabs} from "../ui/tabs/Tabs";
 import {getTabs} from "../../utils/tabs";
@@ -9,11 +9,8 @@ import {LanguageSelector} from "../LanguageSelector";
 import {RefreshButton} from "../RefreshButton";
 import {getValidatedLanguage} from "../../utils/language";
 import styles from './App.module.css';
-import {getHeightShift} from "../../utils/scroll";
 
 export const App: FC = () => {
-    const footerRef = useRef<HTMLDivElement>(null);
-    const headerRef = useRef<HTMLDivElement>(null);
     const tabs = useMemo(() => getTabs(), []);
     const [refresh, setRefresh] = useState<() => void>(() => () => {});
     const [activeTab, setActiveTab] = useState(tabs.length ? tabs[0].id : '');
@@ -32,12 +29,10 @@ export const App: FC = () => {
         return null;
     }
 
-    const heightShift = getHeightShift(headerRef.current, footerRef.current);
-
     return (
         <StrictMode>
             <article className={cn("grid", "grid-container", styles.container)}>
-                <header ref={headerRef} className="cs1 ce12">
+                <header className="cs1 ce12">
                     <Tabs tabs={tabs} activeTab={activeTab} onSelect={setActiveTab}/>
                 </header>
                 <SelectedElementsChecks
@@ -48,16 +43,14 @@ export const App: FC = () => {
                     onActivate={setRefreshHandler}
                     className={cn("cs1", "ce12", styles.wrapper)}
                     language={language}
-                    heightShift={heightShift}
                 />
                 <BoardChecks
                     active={activeTab === 'total'}
                     onActivate={setRefreshHandler}
                     className={cn("cs1", "ce12", styles.wrapper)}
                     language={language}
-                    heightShift={heightShift}
                 />
-                <footer ref={footerRef} className={cn("cs1","ce12", "grid", styles.footer)}>
+                <footer className={cn("cs1","ce12", "grid", styles.footer)}>
                     <p className="cs1 ce9">
                         <LanguageSelector language={language} setLanguage={setLanguage} />
                     </p>

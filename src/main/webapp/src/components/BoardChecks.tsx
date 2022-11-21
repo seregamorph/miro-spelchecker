@@ -5,16 +5,15 @@ import {useSpellCheck} from "../hooks/useSpellCheck";
 import {linkChecksWithItems} from "../utils/checks";
 import {SupportedLanguage} from "../utils/language";
 import {StatusWrapper} from "./StatusWrapper/StatusWrapper";
-import {SpellCheckerCardList} from "./SpellCheckerCardList";
+import {SpellCheckerCardList} from "./SpellCheckerCardList/SpellCheckerCardList";
 
 interface Props {
     active: boolean;
     onActivate: (fn: () => void) => void;
     className: string;
     language: SupportedLanguage;
-    heightShift: number;
 }
-export const BoardChecks: FC<Props> = ({ active, onActivate, className, language, heightShift}) => {
+export const BoardChecks: FC<Props> = ({ active, onActivate, className, language}) => {
     const [items, setItems] = useState<Item[]>([]);
 
     const { checks, refetch, isLoading, isError } = useSpellCheck(items, language);
@@ -56,7 +55,7 @@ export const BoardChecks: FC<Props> = ({ active, onActivate, className, language
 
     return (
         <StatusWrapper isError={isError} isLoading={isLoading} className={className} count={list.length}>
-            <SpellCheckerCardList className={className} items={list} heightShift={heightShift}/>
+            <SpellCheckerCardList className={className} items={list}/>
         </StatusWrapper>
     );
 }
