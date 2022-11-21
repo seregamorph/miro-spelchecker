@@ -18,6 +18,7 @@ public class SecurityHeadersFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
         response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
+        response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "Content-Type");
         filterChain.doFilter(request, response);
     }
 }
