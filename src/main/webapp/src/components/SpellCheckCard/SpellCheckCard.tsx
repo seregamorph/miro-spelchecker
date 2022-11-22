@@ -6,7 +6,6 @@ import { SpellCheckResult } from "../../utils/api";
 import { Button } from "../ui/Button";
 import { applySuggestion } from "../../utils/checks";
 import { isObjectWithContent } from "../../utils/board";
-import { normalizeContent } from "../../utils/content";
 import { ContentHighlights } from "../ContentHighlights/ContentHighlights";
 import styles from "./SpellCheckCard.module.css";
 
@@ -55,9 +54,7 @@ export const SpellCheckCard: FC<Props> = ({ item, check }) => {
         role="button"
         tabIndex={0}
       >
-        <ContentHighlights check={check} replaced={replaced}>
-          {normalizeContent(item.content)}
-        </ContentHighlights>
+        <ContentHighlights check={check} replaced={replaced} />
       </h4>
       <div className={cn("grid", styles.body)}>
         <div

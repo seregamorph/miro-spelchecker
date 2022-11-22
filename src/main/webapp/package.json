@@ -7,7 +7,8 @@
     "build": "vite build",
     "serve": "vite preview",
     "lint": "eslint --config .eslintrc.js .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "validate": "yarn format && yarn lint"
   },
   "dependencies": {
     "@tanstack/react-virtual": "^3.0.0-beta.23",
