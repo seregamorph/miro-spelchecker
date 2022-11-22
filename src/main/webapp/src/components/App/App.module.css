@@ -1,14 +1,14 @@
 .wrapper {
-    height: 100%;
-    overflow: auto;
-    padding: 0 var(--space-xxsmall);
+  height: 100%;
+  overflow: auto;
+  padding: 0 var(--space-xxsmall);
 }
 
 .container {
-    height: 100vh;
-    grid-template-rows: min-content auto min-content;
+  height: 100vh;
+  grid-template-rows: min-content auto min-content;
 }
 
 .footer {
-    padding: 0 0 var(--space-medium) 0;
+  padding: 0 0 var(--space-medium) 0;
 }
