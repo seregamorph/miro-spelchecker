@@ -1,9 +1,10 @@
 import {FC, ReactNode} from "react";
 import cn from 'classnames'
+import {VoidFn} from "../../utils/common";
 
 interface Props {
     children: string | ReactNode;
-    onClick: () => void;
+    onClick: VoidFn;
     type: 'secondary' | 'tertiary',
     size: 'medium' | 'small'
     isLoading?: boolean;

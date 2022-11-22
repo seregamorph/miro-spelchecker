@@ -1,6 +1,11 @@
 .header {
+    cursor: pointer;
     margin: 0;
-    padding: var(--space-small) 0;
+    padding-top: var(--space-small);
+}
+
+.body {
+    padding-top: var(--space-small);
 }
 
 .card {

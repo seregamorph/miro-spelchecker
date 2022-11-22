@@ -15,13 +15,12 @@ const MAX_SUGGESTIONS_COUNT = 3;
 interface Props {
     check: SpellCheckResult;
     item: Item;
-    hideFocus?: boolean;
 }
-export const SpellCheckCard: FC<Props> = (({item, check, hideFocus}) => {
+export const SpellCheckCard: FC<Props> = (({item, check}) => {
     const [replaced, setReplaced] = useState(false);
 
-    const zoomToElement = () => {
-        miro.board.viewport.zoomTo(item)
+    const zoomToElement = async () => {
+        await miro.board.viewport.zoomTo(item)
     };
 
     const fixCheck = async (suggestion: string) => {
@@ -43,9 +42,13 @@ export const SpellCheckCard: FC<Props> = (({item, check, hideFocus}) => {
         .slice(0, MAX_SUGGESTIONS_COUNT)
 
     return <section className={styles.card}>
-        <h4 className={cn("h4", styles.header)}><ContentHighlights check={check} replaced={replaced}>{normalizeContent(item.content)}</ContentHighlights></h4>
-        <div className="grid">
-            <div className={cn("cs1", "ce8", "grid", {
+        <h4 className={cn("h4", styles.header)} onClick={zoomToElement} role="button" tabIndex={0}>
+            <ContentHighlights check={check} replaced={replaced}>
+                {normalizeContent(item.content)}
+            </ContentHighlights>
+        </h4>
+        <div className={cn("grid", styles.body)}>
+            <div className={cn("cs1", "ce12", "grid", {
                 'align-self-center': replaced || !suggestions.length
             })} >
                 {replaced ? (
@@ -64,11 +67,6 @@ export const SpellCheckCard: FC<Props> = (({item, check, hideFocus}) => {
                    </>
                 )}
             </div>
-            {!hideFocus && <p className="cs10 ce12 align-self-start justify-self--end">
-                <Button type="secondary" size="small" onClick={zoomToElement}>
-                    <span className="icon icon-eye cursor-pointer" />
-                </Button>
-            </p>}
         </div>
     </section>
 });
