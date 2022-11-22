@@ -7,9 +7,8 @@ import styles from './SpellCheckerCardList.module.css';
 interface Props {
     items: SpellCheckList[];
     className: string;
-    hideFocus?: boolean;
 }
-export const SpellCheckerCardList: FC<Props> = ({ className, items,hideFocus }) => {
+export const SpellCheckerCardList: FC<Props> = ({ className, items }) => {
     const ref = useRef<HTMLDivElement>(null)
 
     const virtualizer = useVirtualizer({
@@ -32,7 +31,7 @@ export const SpellCheckerCardList: FC<Props> = ({ className, items,hideFocus }) 
                             transform: `translateY(${virtualRow.start}px)`,
                         }}
                     >
-                        <SpellCheckCard check={items[virtualRow.index].check} item={items[virtualRow.index].item} hideFocus={hideFocus} />
+                        <SpellCheckCard check={items[virtualRow.index].check} item={items[virtualRow.index].item} />
                     </li>
                 ))}
             </ul>

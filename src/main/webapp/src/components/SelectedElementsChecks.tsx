@@ -9,13 +9,14 @@ import {NoElementsSelected} from "./NoElementsSelected/NoElementsSelected";
 import {StatusWrapper} from "./StatusWrapper/StatusWrapper";
 import {SpellCheckerCardList} from "./SpellCheckerCardList/SpellCheckerCardList";
 import {getBoardObjectsWithContent} from "../utils/board";
+import {VoidFn} from "../utils/common";
 
 interface Props {
     active: boolean;
     items: Item[];
     setItems: (items: Item[]) => void;
-    switchToAll: () => void;
-    onActivate: (fn: () => void) => void;
+    switchToAll: VoidFn;
+    onActivate: (fn: VoidFn) => void;
     className: string;
     language: SupportedLanguage;
 }
@@ -63,7 +64,7 @@ export const SelectedElementsChecks: FC<Props> = ({ active, items, setItems, swi
 
     return (
         <StatusWrapper isError={isError} isLoading={isLoading} className={className} count={list.length}>
-            <SpellCheckerCardList className={className} items={list} hideFocus/>
+            <SpellCheckerCardList className={className} items={list} />
         </StatusWrapper>
     );
 }

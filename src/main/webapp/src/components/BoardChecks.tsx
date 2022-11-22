@@ -6,10 +6,11 @@ import {linkChecksWithItems} from "../utils/checks";
 import {SupportedLanguage} from "../utils/language";
 import {StatusWrapper} from "./StatusWrapper/StatusWrapper";
 import {SpellCheckerCardList} from "./SpellCheckerCardList/SpellCheckerCardList";
+import {VoidFn} from "../utils/common";
 
 interface Props {
     active: boolean;
-    onActivate: (fn: () => void) => void;
+    onActivate: (fn: VoidFn) => void;
     className: string;
     language: SupportedLanguage;
 }
