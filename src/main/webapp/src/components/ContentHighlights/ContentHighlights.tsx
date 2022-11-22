@@ -8,8 +8,12 @@ const ELLIPSIS_SYMBOL = '...';
 interface Props {
     check: SpellCheckResult;
     children: string;
+    replaced?: boolean;
 }
-export const ContentHighlights: FC<Props> = ({ check, children }) => {
+export const ContentHighlights: FC<Props> = ({ check, replaced, children }) => {
+    if (replaced) {
+        return <span className={styles.text}>{children}</span>
+    }
     const start = children.slice(0, check.fromPos);
     const trimmedStart = start.length > MAX_SURROUNDED_PART_LENGTH
         ? `${ELLIPSIS_SYMBOL}${start.slice(start.length - MAX_SURROUNDED_PART_LENGTH).trim()}`
@@ -22,7 +26,7 @@ export const ContentHighlights: FC<Props> = ({ check, children }) => {
 
     return <>
         <span className={styles.text}>{trimmedStart}</span>
-        <span className={styles.highlight}>{message}</span>
+        <span className={styles.highlight} title={check.message}>{message}</span>
         <span className={styles.text}>{trimmedEnd}</span>
     </>
 }

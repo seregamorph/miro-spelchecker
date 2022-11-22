@@ -44,6 +44,10 @@ ul, li {
   align-self: flex-end;
 }
 
+.align-self-center {
+  align-self: center;
+}
+
 .align-self-start {
   align-self: flex-start;
 }
