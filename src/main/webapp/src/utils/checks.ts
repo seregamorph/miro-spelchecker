@@ -41,9 +41,15 @@ export const applySuggestion = async (
   if (!isObjectWithContent(item)) {
     return;
   }
-  item.content = `${item.content.slice(
-    0,
-    check.fromPos
-  )}${suggestion}${item.content.slice(check.toPos)}`;
+
+  const fromPos = check.fromPos;
+  const toPos = check.toPos;
+
+  item.content = [
+    item.content.slice(0, fromPos),
+    suggestion,
+    item.content.slice(toPos),
+  ].join("");
+
   await item.sync();
 };
