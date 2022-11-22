@@ -11,30 +11,30 @@ export const useSelectedElements = () => {
         miro.board.getSelection()
             .catch(() => {
                 // TODO handle error
-                return []
+                return [];
             })
             .then((items) => {
                 if (cancelled) {
                     return;
                 }
                 setItems(items);
-            })
+            });
 
         return () => {
             cancelled = true;
-        }
+        };
     }, []);
 
     useEffect(() => {
         const onSelection = (event: SelectionUpdateEvent) => {
-            setItems(event.items || [])
-        }
+            setItems(event.items || []);
+        };
 
-        miro.board.ui.on('selection:update', onSelection);
+        miro.board.ui.on("selection:update", onSelection);
         return () => {
-            miro.board.ui.off('selection:update', onSelection);
-        }
+            miro.board.ui.off("selection:update", onSelection);
+        };
     }, []);
 
     return state;
-}
+};

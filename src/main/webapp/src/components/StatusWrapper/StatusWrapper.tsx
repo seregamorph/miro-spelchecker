@@ -1,6 +1,6 @@
 import {FC, ReactNode} from "react";
 import cn from "classnames";
-import styles from './StatusWrapper.module.css';
+import styles from "./StatusWrapper.module.css";
 
 interface Props {
     className: string;
@@ -11,22 +11,22 @@ interface Props {
 }
 export const StatusWrapper: FC<Props> = ({isError, isLoading, count, children, className}) => {
     if (isLoading) {
-        return <p className={cn('centered', 'p-medium', styles.subtext, className)}>
+        return <p className={cn("centered", "p-medium", styles.subtext, className)}>
             Checking the elements...
-        </p>
+        </p>;
     }
 
     if (isError) {
-        return <p className={cn('centered', 'p-medium', styles.danger, className)}>
+        return <p className={cn("centered", "p-medium", styles.danger, className)}>
             Something went wrong, please try again
-        </p>
+        </p>;
     }
 
     if (!count) {
-        return <p className={cn('centered', 'p-medium', styles.subtext, className)}>
+        return <p className={cn("centered", "p-medium", styles.subtext, className)}>
             No errors found
-        </p>
+        </p>;
     }
 
-    return <>{children}</>
-}
+    return <>{children}</>;
+};

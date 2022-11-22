@@ -1,14 +1,14 @@
 import {FC, KeyboardEventHandler, useState} from "react";
 import {Item} from "@mirohq/websdk-types";
-import cn from 'classnames';
-import checkboxIcon from 'mirotone/dist/icons/checkbox.svg';
+import cn from "classnames";
+import checkboxIcon from "mirotone/dist/icons/checkbox.svg";
 import {SpellCheckResult} from "../../utils/api";
 import {Button} from "../ui/Button";
 import {applySuggestion} from "../../utils/checks";
 import {isObjectWithContent} from "../../utils/board";
 import {normalizeContent} from "../../utils/content";
 import {ContentHighlights} from "../ContentHighlights/ContentHighlights";
-import styles from './SpellCheckCard.module.css';
+import styles from "./SpellCheckCard.module.css";
 
 const MAX_SUGGESTIONS_COUNT = 3;
 
@@ -20,21 +20,21 @@ export const SpellCheckCard: FC<Props> = (({item, check}) => {
     const [replaced, setReplaced] = useState(false);
 
     const zoomToElement = async () => {
-        await miro.board.viewport.zoomTo(item)
+        await miro.board.viewport.zoomTo(item);
     };
 
     const onKeyDown: KeyboardEventHandler<HTMLHeadingElement> = async (event) => {
-        if (event.key === 'Enter') {
+        if (event.key === "Enter") {
             await zoomToElement();
         }
-    }
+    };
 
     const fixCheck = async (suggestion: string) => {
         try {
             await applySuggestion(item, check, suggestion);
             setReplaced(true);
         } catch (err) {
-            console.log('Unable to apply the suggestion', err);
+            console.log("Unable to apply the suggestion", err);
         }
     };
 
@@ -45,7 +45,7 @@ export const SpellCheckCard: FC<Props> = (({item, check}) => {
     const suggestions = check
         .suggestedReplacements
         .filter(suggestion => suggestion)
-        .slice(0, MAX_SUGGESTIONS_COUNT)
+        .slice(0, MAX_SUGGESTIONS_COUNT);
 
     return <section className={styles.card}>
         <h4 className={cn("h4", styles.header)} onClick={zoomToElement} onKeyDown={onKeyDown} role="button" tabIndex={0}>
@@ -55,12 +55,12 @@ export const SpellCheckCard: FC<Props> = (({item, check}) => {
         </h4>
         <div className={cn("grid", styles.body)}>
             <div className={cn("cs1", "ce12", "grid", {
-                'align-self-center': replaced || !suggestions.length
+                "align-self-center": replaced || !suggestions.length
             })} >
                 {replaced ? (
                     <>
                         <img className={styles.success} src={checkboxIcon} alt="" />
-                        <span className={cn('p-small', styles.done)}>Done</span>
+                        <span className={cn("p-small", styles.done)}>Done</span>
                     </>
                 ) : (
                     <>
@@ -74,5 +74,5 @@ export const SpellCheckCard: FC<Props> = (({item, check}) => {
                 )}
             </div>
         </div>
-    </section>
+    </section>;
 });

@@ -38,14 +38,14 @@ export const useTrackActiveElement = (items: Item[], onContent: (items: Item[]) 
                         return;
                     }
 
-                    onContent([updatedItem])
-                })
-        }
+                    onContent([updatedItem]);
+                });
+        };
 
         const interval = setInterval(detectElementChanges, POLLING_INTERVAL);
         return () => {
             cancelled = true;
             clearInterval(interval);
-        }
+        };
     }, [items, onContent]);
-}
+};

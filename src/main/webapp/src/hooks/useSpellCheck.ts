@@ -1,5 +1,5 @@
 import {useCallback, useMemo, useState} from "react";
-import useSWR from 'swr'
+import useSWR from "swr";
 import {Item} from "@mirohq/websdk-types";
 import {RequestData, runSpellCheckRequest} from "../utils/api";
 import {getContentFromElements} from "../utils/board";
@@ -11,9 +11,9 @@ export const useSpellCheck = (items: Item[], language: SupportedLanguage) => {
     const cacheKey = useMemo((): RequestData | null => {
         const itemsWithContent = getContentFromElements(items);
         return itemsWithContent.length ? { elements: itemsWithContent, language } : null;
-    }, [items, language])
+    }, [items, language]);
 
-    const { data, error, mutate } = useSWR(cacheKey, runSpellCheckRequest)
+    const { data, error, mutate } = useSWR(cacheKey, runSpellCheckRequest);
 
     const refetch = useCallback(() => {
         if (!cacheKey) {
@@ -23,11 +23,11 @@ export const useSpellCheck = (items: Item[], language: SupportedLanguage) => {
         setRefreshError(undefined);
         mutate()
             .catch(err => {
-                setRefreshError(err)
+                setRefreshError(err);
             })
             .then(() => {
-                setRefreshLoading(false)
-            })
+                setRefreshLoading(false);
+            });
     }, [mutate, cacheKey]);
 
     return {
@@ -35,5 +35,5 @@ export const useSpellCheck = (items: Item[], language: SupportedLanguage) => {
         isLoading: (!error && !data) || refreshLoading,
         isError: Boolean(error || refreshError),
         refetch
-    }
-}
+    };
+};

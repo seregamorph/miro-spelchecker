@@ -17,5 +17,5 @@ export const LanguageSelector: FC<Props> = ({language, setLanguage}) => {
         <select className="select select-small" id="language-selector" value={language} onChange={onChange}>
             {SUPPORTED_LANGUAGES.map(lang => <option key={lang.value} value={lang.value}>{lang.label}</option>)}
         </select>
-    </>)
-}
+    </>);
+};

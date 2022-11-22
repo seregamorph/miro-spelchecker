@@ -19,5 +19,5 @@ export const Tabs: FC<Props> = ({tabs, activeTab, onSelect}) => {
                     active={activeTab === tab.id}
                 />))}
         </div>
-    </div>)
-}
+    </div>);
+};

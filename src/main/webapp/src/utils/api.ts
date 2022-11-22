@@ -15,20 +15,20 @@ export interface RequestData {
 }
 export const runSpellCheckRequest = (payload: RequestData): Promise<SpellCheckResult[]> => {
     const apiHost = import.meta.env.SPELLCHECK_API_HOST || document.location.href;
-    const url = new URL('/spellcheck', apiHost);
+    const url = new URL("/spellcheck", apiHost);
 
     return fetch(url, {
-        method: 'POST',
+        method: "POST",
         body: JSON.stringify(payload),
         headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json"
         }
     })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Something went wrong');
+                throw new Error("Something went wrong");
             }
 
             return response.json();
-        })
-}
+        });
+};

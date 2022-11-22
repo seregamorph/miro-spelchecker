@@ -11,7 +11,7 @@ export const linkChecksWithItems = (checks: SpellCheckResult[], items: Item[]): 
         return {
             ...acc,
             [item.id]: item
-        }
+        };
     }, {});
 
     return checks.reduce<SpellCheckList[]>((acc, check) => {
@@ -23,14 +23,14 @@ export const linkChecksWithItems = (checks: SpellCheckResult[], items: Item[]): 
         return [...acc, {
             check,
             item: relatedItem
-        }]
-    }, [])
-}
+        }];
+    }, []);
+};
 
 export const applySuggestion = async (item: Item, check: SpellCheckResult, suggestion: string) => {
     if (!isObjectWithContent(item)) {
         return;
     }
     item.content = `${item.content.slice(0, check.fromPos)}${suggestion}${item.content.slice(check.toPos)}`;
-    await item.sync()
-}
+    await item.sync();
+};

@@ -24,7 +24,7 @@ export const BoardChecks: FC<Props> = ({ active, onActivate, className, language
             .then(boardItems => {
                 const itemsWithContent = getBoardObjectsWithContent(boardItems);
                 setItems(itemsWithContent);
-            })
+            });
     }, []);
 
     useEffect(() => {
@@ -36,7 +36,7 @@ export const BoardChecks: FC<Props> = ({ active, onActivate, className, language
 
     useEffect(() => {
         refetch();
-    }, [items])
+    }, [items]);
 
     useEffect(() => {
         if (!active) {
@@ -44,11 +44,11 @@ export const BoardChecks: FC<Props> = ({ active, onActivate, className, language
         }
 
         onActivate(onRefresh);
-    }, [active, onActivate, onRefresh])
+    }, [active, onActivate, onRefresh]);
 
     const list = useMemo(() => {
         return linkChecksWithItems(checks || [], items);
-    }, [items, checks])
+    }, [items, checks]);
 
     if (!active) {
         return null;
@@ -59,4 +59,4 @@ export const BoardChecks: FC<Props> = ({ active, onActivate, className, language
             <SpellCheckerCardList className={className} items={list}/>
         </StatusWrapper>
     );
-}
+};

@@ -1,5 +1,5 @@
 import {FC} from "react";
-import cn from 'classnames';
+import cn from "classnames";
 import {Button} from "./ui/Button";
 import {VoidFn} from "../utils/common";
 
@@ -14,5 +14,5 @@ export const RefreshButton: FC<Props> = ({ isLoading,className,onClick}) => {
                 <span className="icon icon-refresh cursor-pointer" />
             </Button>
         </p>
-   )
-}
+   );
+};

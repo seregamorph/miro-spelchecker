@@ -1,11 +1,11 @@
-import {createRoot} from 'react-dom/client';
+import {createRoot} from "react-dom/client";
 import {App} from "./components/App/App";
-import './assets/style.css';
+import "./assets/style.css";
 
-const container = document.getElementById('root');
+const container = document.getElementById("root");
 
 if (!container) {
-    throw new Error('root container not found')
+    throw new Error("root container not found");
 }
 
 const root = createRoot(container);

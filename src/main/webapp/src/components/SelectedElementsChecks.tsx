@@ -1,6 +1,6 @@
 import {FC, useCallback, useEffect, useMemo} from "react";
 import {Item} from "@mirohq/websdk-types";
-import cn from 'classnames';
+import cn from "classnames";
 import {useTrackActiveElement} from "../hooks/useTrackActiveElement";
 import {useSpellCheck} from "../hooks/useSpellCheck";
 import {linkChecksWithItems} from "../utils/checks";
@@ -30,7 +30,7 @@ export const SelectedElementsChecks: FC<Props> = ({ active, items, setItems, swi
             .then(boardItems => {
                 const itemsWithContent = getBoardObjectsWithContent(boardItems);
                 setItems(itemsWithContent);
-            })
+            });
     }, [items, setItems]);
 
     useEffect(() => {
@@ -45,21 +45,21 @@ export const SelectedElementsChecks: FC<Props> = ({ active, items, setItems, swi
             return;
         }
 
-        onActivate(onRefresh)
-    }, [active, onActivate, onRefresh])
+        onActivate(onRefresh);
+    }, [active, onActivate, onRefresh]);
 
     const list = useMemo(() => {
         return linkChecksWithItems(checks || [], items);
-    }, [items, checks])
+    }, [items, checks]);
 
     if (!active) {
         return null;
     }
 
     if (!items.length) {
-        return <div className={cn('centered', className)}>
+        return <div className={cn("centered", className)}>
             <NoElementsSelected onSwitch={switchToAll}/>
-        </div>
+        </div>;
     }
 
     return (
@@ -67,4 +67,4 @@ export const SelectedElementsChecks: FC<Props> = ({ active, items, setItems, swi
             <SpellCheckerCardList className={className} items={list} />
         </StatusWrapper>
     );
-}
+};

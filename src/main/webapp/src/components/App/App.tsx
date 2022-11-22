@@ -1,5 +1,5 @@
-import {FC, StrictMode, useCallback, useMemo, useState} from 'react';
-import cn from 'classnames';
+import {FC, StrictMode, useCallback, useMemo, useState} from "react";
+import cn from "classnames";
 import {Tabs} from "../ui/tabs/Tabs";
 import {getTabs} from "../../utils/tabs";
 import {SelectedElementsChecks} from "../SelectedElementsChecks";
@@ -9,21 +9,21 @@ import {LanguageSelector} from "../LanguageSelector";
 import {RefreshButton} from "../RefreshButton";
 import {getValidatedLanguage} from "../../utils/language";
 import {voidFn, VoidFn} from "../../utils/common";
-import styles from './App.module.css';
+import styles from "./App.module.css";
 
 export const App: FC = () => {
     const tabs = useMemo(() => getTabs(), []);
     const [refresh, setRefresh] = useState<VoidFn>(() => voidFn);
-    const [activeTab, setActiveTab] = useState(tabs.length ? tabs[0].id : '');
+    const [activeTab, setActiveTab] = useState(tabs.length ? tabs[0].id : "");
     const [selectedItems, setSelectedItems] = useSelectedElements();
     const [language, setLanguage] = useState(getValidatedLanguage);
 
     const setRefreshHandler = useCallback((fn: VoidFn) => {
-        setRefresh(() => fn)
-    }, [])
+        setRefresh(() => fn);
+    }, []);
 
     const switchToAll = useCallback(() => {
-        setActiveTab('total')
+        setActiveTab("total");
     }, []);
 
     if (!selectedItems) {
@@ -37,7 +37,7 @@ export const App: FC = () => {
                     <Tabs tabs={tabs} activeTab={activeTab} onSelect={setActiveTab}/>
                 </header>
                 <SelectedElementsChecks
-                    active={activeTab === 'selected'}
+                    active={activeTab === "selected"}
                     items={selectedItems}
                     setItems={setSelectedItems}
                     switchToAll={switchToAll}
@@ -46,7 +46,7 @@ export const App: FC = () => {
                     language={language}
                 />
                 <BoardChecks
-                    active={activeTab === 'total'}
+                    active={activeTab === "total"}
                     onActivate={setRefreshHandler}
                     className={cn("cs1", "ce12", styles.wrapper)}
                     language={language}

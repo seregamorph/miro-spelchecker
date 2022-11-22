@@ -1,9 +1,9 @@
 import {FC} from "react";
 import { SpellCheckResult } from "../../utils/api";
-import styles from './ContentHighlights.module.css';
+import styles from "./ContentHighlights.module.css";
 
 const MAX_SURROUNDED_PART_LENGTH = 10;
-const ELLIPSIS_SYMBOL = '...';
+const ELLIPSIS_SYMBOL = "...";
 
 interface Props {
     check: SpellCheckResult;
@@ -12,7 +12,7 @@ interface Props {
 }
 export const ContentHighlights: FC<Props> = ({ check, replaced, children }) => {
     if (replaced) {
-        return <span className={styles.text}>{children}</span>
+        return <span className={styles.text}>{children}</span>;
     }
     const start = children.slice(0, check.fromPos);
     const trimmedStart = start.length > MAX_SURROUNDED_PART_LENGTH
@@ -28,5 +28,5 @@ export const ContentHighlights: FC<Props> = ({ check, replaced, children }) => {
         <span className={styles.text}>{trimmedStart}</span>
         <span className={styles.highlight} title={check.message}>{message}</span>
         <span className={styles.text}>{trimmedEnd}</span>
-    </>
-}
+    </>;
+};
