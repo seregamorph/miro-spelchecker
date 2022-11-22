@@ -1,9 +1,10 @@
 package com.miro.spelchecker.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.languagetool.markup.AnnotatedText;
 
 @Getter
+@AllArgsConstructor
 public class SpelCheckRequestElement {
     private String elementId;
     private String text;

@@ -2,22 +2,29 @@ package com.miro.spelchecker.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.jsoup.nodes.TextNode;
 import org.languagetool.rules.RuleMatch;
 
 
+import java.util.Arrays;
 import java.util.List;
 
 @Getter
 @Setter
 public class SpelCheckResponseElement {
+
+    private static String[] charsToBeEncoded = new String[] {":", "/", "?", "#", "[", "]", "@", "!", "$", "&", "'", "(", ")", "*", "+", ",", ";", "="};
+
     private String elementId;
     private String plainText;
     private int fromPosPlain;
     private int toPosPlain;
     private String message;
     private List<String> suggestedReplacements;
-    private int indexShiftStart;
-    private int indexShiftEnd;
+    private TextNode textNode;
+    private int indexShiftForStartPosition;
+    private int indexShiftForEndPosition;
+
 
     public SpelCheckResponseElement(RuleMatch match){
         this.setFromPosPlain(match.getFromPos());
@@ -30,19 +37,29 @@ public class SpelCheckResponseElement {
         }
     }
 
-    public SpelCheckResponseElement(String elementId, RuleMatch match, int indexShiftStart, String plainText, int indexShiftEnd){
+    public SpelCheckResponseElement(String elementId, RuleMatch match, String plainText, Integer plainTextStartIndex, TextNode textNode){
         this(match);
         this.setElementId(elementId);
-        this.indexShiftStart = indexShiftStart;
-        this.indexShiftEnd = indexShiftEnd;
         this.plainText = plainText;
+        this.textNode = textNode;
+
+        //Find number of html-encoded characters within the text node & before the error position.
+        int countOfEncodedCharactersBeforeMatchPosition = (int) countNumberOfOccurrences(plainText.substring(plainTextStartIndex,match.getFromPos()), charsToBeEncoded);
+        this.indexShiftForStartPosition = textNode.sourceRange().start().columnNumber() - plainTextStartIndex + (countOfEncodedCharactersBeforeMatchPosition)*4 ;
+
+        int countOfEncodedCharactersInTheMatch = (int) countNumberOfOccurrences(plainText.substring(match.getFromPos(), match.getToPos()), charsToBeEncoded);
+        this.indexShiftForEndPosition = indexShiftForStartPosition + countOfEncodedCharactersInTheMatch*4;
     }
 
     public int getFromPos() {
-        return fromPosPlain + indexShiftStart - 1;
+        return fromPosPlain + indexShiftForStartPosition - 1;
     }
 
     public int getToPos() {
-        return toPosPlain + indexShiftStart + indexShiftEnd - 1 ;
+        return toPosPlain + indexShiftForEndPosition - 1 ;
+    }
+
+    private static long countNumberOfOccurrences(String inputStr, String[] items) {
+        return Arrays.stream(items).filter(inputStr::contains).count();
     }
 }
