@@ -1,4 +1,4 @@
-import {FC, useState} from "react";
+import {FC, KeyboardEventHandler, useState} from "react";
 import {Item} from "@mirohq/websdk-types";
 import cn from 'classnames';
 import checkboxIcon from 'mirotone/dist/icons/checkbox.svg';
@@ -23,6 +23,12 @@ export const SpellCheckCard: FC<Props> = (({item, check}) => {
         await miro.board.viewport.zoomTo(item)
     };
 
+    const onKeyDown: KeyboardEventHandler<HTMLHeadingElement> = async (event) => {
+        if (event.key === 'Enter') {
+            await zoomToElement();
+        }
+    }
+
     const fixCheck = async (suggestion: string) => {
         try {
             await applySuggestion(item, check, suggestion);
@@ -42,7 +48,7 @@ export const SpellCheckCard: FC<Props> = (({item, check}) => {
         .slice(0, MAX_SUGGESTIONS_COUNT)
 
     return <section className={styles.card}>
-        <h4 className={cn("h4", styles.header)} onClick={zoomToElement} role="button" tabIndex={0}>
+        <h4 className={cn("h4", styles.header)} onClick={zoomToElement} onKeyDown={onKeyDown} role="button" tabIndex={0}>
             <ContentHighlights check={check} replaced={replaced}>
                 {normalizeContent(item.content)}
             </ContentHighlights>
