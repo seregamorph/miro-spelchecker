@@ -1,28 +1,29 @@
 .header {
-    cursor: pointer;
-    margin: 0;
-    padding-top: var(--space-small);
+  cursor: pointer;
+  margin: 0;
+  padding-top: var(--space-small);
 }
 
 .body {
-    padding-top: var(--space-small);
+  padding-top: var(--space-small);
 }
 
 .card {
-    padding-top: var(--space-small);
+  padding-top: var(--space-small);
 }
 
 .done {
-    color: var(--green800);
+  color: var(--green800);
 }
 
 .success {
-    /*
+  /*
         There is not way to control the icon color except making a filter.
         This actually an approach Mirotone uses to color icons inside a button
     */
-    filter: invert(46%) sepia(10%) saturate(4344%) hue-rotate(66deg) brightness(88%) contrast(71%);
-    height: var(--space-small);
-    width: var(--space-small);
-    object-fit: scale-down;
+  filter: invert(46%) sepia(10%) saturate(4344%) hue-rotate(66deg)
+    brightness(88%) contrast(71%);
+  height: var(--space-small);
+  width: var(--space-small);
+  object-fit: scale-down;
 }
