@@ -5,10 +5,11 @@ const POLLING_INTERVAL = 1_000;
 
 export const useTrackActiveElement = (
   items: ItemWithContent[],
-  onContent: (items: ItemWithContent[]) => void
+  onContent: (items: ItemWithContent[]) => void,
+  pauseTracking: boolean
 ) => {
   useEffect(() => {
-    if (items.length !== 1) {
+    if (items.length !== 1 || pauseTracking) {
       return;
     }
 
@@ -44,5 +45,5 @@ export const useTrackActiveElement = (
       cancelled = true;
       clearInterval(interval);
     };
-  }, [items, onContent]);
+  }, [items, onContent, pauseTracking]);
 };

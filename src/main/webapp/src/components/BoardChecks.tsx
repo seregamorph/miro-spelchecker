@@ -80,7 +80,7 @@ export const BoardChecks: FC<Props> = ({
         className={className}
         items={list}
         disabled={isLoading}
-        onFix={onRefresh}
+        onAfterFix={onRefresh}
       />
     </StatusWrapper>
   );

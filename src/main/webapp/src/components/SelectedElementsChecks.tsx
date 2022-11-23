@@ -31,11 +31,12 @@ export const SelectedElementsChecks: FC<Props> = ({
   className,
   language,
 }) => {
-  useTrackActiveElement(items, setItems);
-
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [list, setList] = useState<SpellCheckList[]>([]);
+
+  const [pauseTracking, setPauseTracking] = useState(false);
+  useTrackActiveElement(items, setItems, pauseTracking);
 
   const onRefresh = useCallback(async () => {
     if (!items.length) {
@@ -67,11 +68,33 @@ export const SelectedElementsChecks: FC<Props> = ({
     await onRefresh();
   }, [onRefresh]);
 
+  const onBeforeFix = useCallback(() => {
+    setPauseTracking(true);
+  }, []);
+
+  const onAfterFix = useCallback(
+    (item: ItemWithContent) => {
+      setItems([item]);
+    },
+    [setItems]
+  );
+
   useEffect(() => {
     if (!active) {
       return;
     }
-    onRefresh();
+
+    let cancelled = false;
+
+    onRefresh().then(() => {
+      if (cancelled) {
+        return;
+      }
+      setPauseTracking(false);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, [onRefresh, active]);
 
   useEffect(() => {
@@ -105,7 +128,8 @@ export const SelectedElementsChecks: FC<Props> = ({
         className={className}
         items={list}
         disabled={isLoading}
-        onFix={onRefresh}
+        onAfterFix={onAfterFix}
+        onBeforeFix={onBeforeFix}
       />
     </StatusWrapper>
   );

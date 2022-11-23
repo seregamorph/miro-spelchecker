@@ -2,7 +2,7 @@ import { FC, KeyboardEventHandler } from "react";
 import cn from "classnames";
 import { Button } from "../ui/Button";
 import { applySuggestion, SpellCheckList } from "../../utils/checks";
-import { isObjectWithContent } from "../../utils/board";
+import { isObjectWithContent, ItemWithContent } from "../../utils/board";
 import { ContentHighlights } from "../ContentHighlights/ContentHighlights";
 import styles from "./SpellCheckCard.module.css";
 
@@ -11,12 +11,14 @@ const MAX_SUGGESTIONS_COUNT = 3;
 interface Props {
   data: SpellCheckList;
   disabled: boolean;
-  onFix: VoidFunction;
+  onBeforeFix?: VoidFunction;
+  onAfterFix?: (item: ItemWithContent) => void;
 }
 export const SpellCheckCard: FC<Props> = ({
   data: { item, check },
   disabled,
-  onFix,
+  onBeforeFix,
+  onAfterFix,
 }) => {
   const zoomToElement = async () => {
     await miro.board.viewport.zoomTo(item);
@@ -30,8 +32,9 @@ export const SpellCheckCard: FC<Props> = ({
 
   const fixCheck = async (suggestion: string) => {
     try {
-      await applySuggestion(item, check, suggestion);
-      onFix();
+      onBeforeFix?.();
+      const updated = await applySuggestion(item, check, suggestion);
+      onAfterFix?.(updated);
     } catch (err) {
       console.log("Unable to apply the suggestion", err);
     }

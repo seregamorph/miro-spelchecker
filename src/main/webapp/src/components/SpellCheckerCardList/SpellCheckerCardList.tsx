@@ -2,19 +2,22 @@ import { FC, useRef } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { SpellCheckList } from "../../utils/checks";
 import { SpellCheckCard } from "../SpellCheckCard/SpellCheckCard";
+import { ItemWithContent } from "../../utils/board";
 import styles from "./SpellCheckerCardList.module.css";
 
 interface Props {
   items: SpellCheckList[];
   className: string;
   disabled: boolean;
-  onFix: VoidFunction;
+  onBeforeFix?: VoidFunction;
+  onAfterFix?: (item: ItemWithContent) => void;
 }
 export const SpellCheckerCardList: FC<Props> = ({
   className,
   items,
   disabled,
-  onFix,
+  onBeforeFix,
+  onAfterFix,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -45,7 +48,8 @@ export const SpellCheckerCardList: FC<Props> = ({
             <SpellCheckCard
               data={items[virtualRow.index]}
               disabled={disabled}
-              onFix={onFix}
+              onBeforeFix={onBeforeFix}
+              onAfterFix={onAfterFix}
             />
           </li>
         ))}

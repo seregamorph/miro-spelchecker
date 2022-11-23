@@ -50,4 +50,5 @@ export const applySuggestion = async (
   ].join("");
 
   await item.sync();
+  return item;
 };
