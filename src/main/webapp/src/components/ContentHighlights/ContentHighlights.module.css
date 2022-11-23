@@ -1,5 +1,5 @@
 .highlight {
-  background-color: var(--yellow700);
+  text-decoration: underline wavy var(--red600);
 }
 
 .text {

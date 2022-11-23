@@ -49,39 +49,41 @@ export const SpellCheckCard: FC<Props> = ({
     .slice(0, MAX_SUGGESTIONS_COUNT);
 
   return (
-    <section className={styles.card}>
-      <h4
-        className={cn("h4", styles.header)}
-        onClick={zoomToElement}
-        onKeyDown={onKeyDown}
-        role="button"
-        tabIndex={0}
-      >
-        <ContentHighlights check={check} />
-      </h4>
-      <div className={cn("grid", styles.body)}>
-        <div
-          className={cn("cs1", "ce12", "grid", {
-            "align-self-center": !suggestions.length,
-          })}
+    <div className={styles.wrapper}>
+      <section className={cn("app-card", styles.card)}>
+        <h4
+          className={cn("h4", styles.header)}
+          onClick={zoomToElement}
+          onKeyDown={onKeyDown}
+          role="button"
+          tabIndex={0}
         >
-          {suggestions.map((suggestion) => (
-            <p key={suggestion}>
-              <Button
-                size="small"
-                type="secondary"
-                onClick={() => fixCheck(suggestion)}
-                disabled={disabled}
-              >
-                {suggestion}
-              </Button>
-            </p>
-          ))}
-          {!suggestions.length && (
-            <p className="p-small cs1 ce12">{check.message}</p>
-          )}
+          <ContentHighlights check={check} />
+        </h4>
+        <div className={cn("grid", styles.body)}>
+          <div
+            className={cn("cs1", "ce12", "grid", {
+              "align-self-center": !suggestions.length,
+            })}
+          >
+            {suggestions.map((suggestion) => (
+              <p key={suggestion}>
+                <Button
+                  size="small"
+                  type="secondary"
+                  onClick={() => fixCheck(suggestion)}
+                  disabled={disabled}
+                >
+                  {suggestion}
+                </Button>
+              </p>
+            ))}
+            {!suggestions.length && (
+              <p className="p-small cs1 ce12">{check.message}</p>
+            )}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 };
