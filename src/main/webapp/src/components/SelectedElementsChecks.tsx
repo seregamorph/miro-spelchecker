@@ -11,15 +11,14 @@ import {
   getContentFromElements,
   ItemWithContent,
 } from "../utils/board";
-import { VoidFn } from "../utils/common";
 import { runSpellCheckRequest } from "../utils/api";
 
 interface Props {
   active: boolean;
   items: ItemWithContent[];
   setItems: (items: ItemWithContent[]) => void;
-  switchToAll: VoidFn;
-  onActivate: (fn: VoidFn) => void;
+  switchToAll: VoidFunction;
+  onActivate: (fn: VoidFunction) => void;
   className: string;
   language: SupportedLanguage;
 }

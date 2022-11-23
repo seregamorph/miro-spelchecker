@@ -8,12 +8,11 @@ import { linkChecksWithItems, SpellCheckList } from "../utils/checks";
 import { SupportedLanguage } from "../utils/language";
 import { StatusWrapper } from "./StatusWrapper/StatusWrapper";
 import { SpellCheckerCardList } from "./SpellCheckerCardList/SpellCheckerCardList";
-import { VoidFn } from "../utils/common";
 import { runSpellCheckRequest } from "../utils/api";
 
 interface Props {
   active: boolean;
-  onActivate: (fn: VoidFn) => void;
+  onActivate: (fn: VoidFunction) => void;
   className: string;
   language: SupportedLanguage;
 }

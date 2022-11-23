@@ -1,10 +1,9 @@
 import { FC } from "react";
 import cn from "classnames";
 import { Button } from "./ui/Button";
-import { VoidFn } from "../utils/common";
 
 interface Props {
-  onClick: VoidFn;
+  onClick: VoidFunction;
   loading?: boolean;
   className?: string;
 }
