@@ -26,7 +26,7 @@ export const useSelectedElements = () => {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [setItems]);
 
   useEffect(() => {
     const onSelection = (event: SelectionUpdateEvent) => {
@@ -38,7 +38,7 @@ export const useSelectedElements = () => {
     return () => {
       miro.board.ui.off("selection:update", onSelection);
     };
-  }, []);
+  }, [setItems]);
 
   return state;
 };

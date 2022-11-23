@@ -65,7 +65,7 @@ export const SelectedElementsChecks: FC<Props> = ({
   const onReload = useCallback(async () => {
     setList([]);
     await onRefresh();
-  }, []);
+  }, [onRefresh]);
 
   useEffect(() => {
     if (!active) {
