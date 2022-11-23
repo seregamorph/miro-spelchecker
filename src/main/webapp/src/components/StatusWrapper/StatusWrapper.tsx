@@ -16,7 +16,7 @@ export const StatusWrapper: FC<Props> = ({
   children,
   className,
 }) => {
-  if (isLoading) {
+  if (isLoading && !count) {
     return (
       <p className={cn("centered", "p-medium", styles.subtext, className)}>
         Checking the elements...

@@ -7,8 +7,15 @@ import styles from "./SpellCheckerCardList.module.css";
 interface Props {
   items: SpellCheckList[];
   className: string;
+  disabled: boolean;
+  onFix: VoidFunction;
 }
-export const SpellCheckerCardList: FC<Props> = ({ className, items }) => {
+export const SpellCheckerCardList: FC<Props> = ({
+  className,
+  items,
+  disabled,
+  onFix,
+}) => {
   const ref = useRef<HTMLDivElement>(null);
 
   const virtualizer = useVirtualizer({
@@ -36,8 +43,9 @@ export const SpellCheckerCardList: FC<Props> = ({ className, items }) => {
             }}
           >
             <SpellCheckCard
-              check={items[virtualRow.index].check}
-              item={items[virtualRow.index].item}
+              data={items[virtualRow.index]}
+              disabled={disabled}
+              onFix={onFix}
             />
           </li>
         ))}

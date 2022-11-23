@@ -4,14 +4,10 @@ import styles from "./ContentHighlights.module.css";
 
 interface Props {
   check: SpellCheckResult;
-  replaced?: boolean;
 }
-export const ContentHighlights: FC<Props> = ({ check, replaced }) => {
+export const ContentHighlights: FC<Props> = ({ check }) => {
   const text = check.plainText;
 
-  if (replaced) {
-    return <span className={styles.text}>{text}</span>;
-  }
   const fromPos = check.fromPosPlain;
   const toPos = check.toPosPlain;
   const start = text.slice(0, fromPos);
