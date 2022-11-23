@@ -60,3 +60,4 @@ src/main/webapp/.env
 dist
 
 application-local*.*
+src/main/webapp/tsconfig.tsbuildinfo
