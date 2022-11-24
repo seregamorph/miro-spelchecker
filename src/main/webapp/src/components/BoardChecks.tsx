@@ -1,19 +1,18 @@
-import { FC, useCallback, useEffect, useMemo, useState } from "react";
-import { Item } from "@mirohq/websdk-types";
+import { FC, useCallback, useEffect, useState } from "react";
 import {
   getBoardObjectsWithContent,
+  getContentFromElements,
   OBJECTS_WITH_CONTENT,
 } from "../utils/board";
-import { useSpellCheck } from "../hooks/useSpellCheck";
-import { linkChecksWithItems } from "../utils/checks";
+import { linkChecksWithItems, SpellCheckList } from "../utils/checks";
 import { SupportedLanguage } from "../utils/language";
 import { StatusWrapper } from "./StatusWrapper/StatusWrapper";
 import { SpellCheckerCardList } from "./SpellCheckerCardList/SpellCheckerCardList";
-import { VoidFn } from "../utils/common";
+import { runSpellCheckRequest } from "../utils/api";
 
 interface Props {
   active: boolean;
-  onActivate: (fn: VoidFn) => void;
+  onActivate: (fn: VoidFunction) => void;
   className: string;
   language: SupportedLanguage;
 }
@@ -23,19 +22,35 @@ export const BoardChecks: FC<Props> = ({
   className,
   language,
 }) => {
-  const [items, setItems] = useState<Item[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [list, setList] = useState<SpellCheckList[]>([]);
 
-  const { checks, refetch, isLoading, isError } = useSpellCheck(
-    items,
-    language
-  );
-
-  const onRefresh = useCallback(() => {
-    miro.board.get({ type: OBJECTS_WITH_CONTENT }).then((boardItems) => {
+  const onRefresh = useCallback(async () => {
+    setIsLoading(true);
+    setIsError(false);
+    try {
+      const boardItems = await miro.board.get({ type: OBJECTS_WITH_CONTENT });
       const itemsWithContent = getBoardObjectsWithContent(boardItems);
-      setItems(itemsWithContent);
-    });
-  }, []);
+      const content = getContentFromElements(itemsWithContent);
+      const newChecks = await runSpellCheckRequest({
+        language,
+        elements: content,
+      });
+      const newList = linkChecksWithItems(itemsWithContent, newChecks);
+      setList(newList);
+    } catch (err) {
+      setIsError(true);
+      setList([]);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [language]);
+
+  const onReload = useCallback(async () => {
+    setList([]);
+    await onRefresh();
+  }, [onRefresh]);
 
   useEffect(() => {
     if (!active) {
@@ -45,20 +60,12 @@ export const BoardChecks: FC<Props> = ({
   }, [onRefresh, active]);
 
   useEffect(() => {
-    refetch();
-  }, [items]);
-
-  useEffect(() => {
     if (!active) {
       return;
     }
 
-    onActivate(onRefresh);
-  }, [active, onActivate, onRefresh]);
-
-  const list = useMemo(() => {
-    return linkChecksWithItems(checks || [], items);
-  }, [items, checks]);
+    onActivate(onReload);
+  }, [active, onActivate, onReload]);
 
   if (!active) {
     return null;
@@ -71,7 +78,12 @@ export const BoardChecks: FC<Props> = ({
       className={className}
       count={list.length}
     >
-      <SpellCheckerCardList className={className} items={list} />
+      <SpellCheckerCardList
+        className={className}
+        items={list}
+        disabled={isLoading}
+        onAfterFix={onRefresh}
+      />
     </StatusWrapper>
   );
 };

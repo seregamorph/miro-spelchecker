@@ -1,10 +1,9 @@
 import { FC } from "react";
 import { Button } from "../ui/Button";
-import { VoidFn } from "../../utils/common";
 import styles from "./NoElementsSelected.module.css";
 
 interface Props {
-  onSwitch: VoidFn;
+  onSwitch: VoidFunction;
 }
 export const NoElementsSelected: FC<Props> = ({ onSwitch }) => {
   return (

@@ -8,17 +8,17 @@ import { useSelectedElements } from "../../hooks/useSelectedElements";
 import { LanguageSelector } from "../LanguageSelector";
 import { RefreshButton } from "../RefreshButton";
 import { getValidatedLanguage } from "../../utils/language";
-import { voidFn, VoidFn } from "../../utils/common";
+import { voidFn } from "../../utils/common";
 import styles from "./App.module.css";
 
 export const App: FC = () => {
   const tabs = useMemo(() => getTabs(), []);
-  const [refresh, setRefresh] = useState<VoidFn>(() => voidFn);
+  const [refresh, setRefresh] = useState<VoidFunction>(() => voidFn);
   const [activeTab, setActiveTab] = useState(tabs.length ? tabs[0].id : "");
   const [selectedItems, setSelectedItems] = useSelectedElements();
   const [language, setLanguage] = useState(getValidatedLanguage);
 
-  const setRefreshHandler = useCallback((fn: VoidFn) => {
+  const setRefreshHandler = useCallback((fn: VoidFunction) => {
     setRefresh(() => fn);
   }, []);
 

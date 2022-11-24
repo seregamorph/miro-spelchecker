@@ -1,23 +1,19 @@
 import { useEffect } from "react";
-import { Item } from "@mirohq/websdk-types";
-import { isObjectWithContent } from "../utils/board";
+import { isObjectWithContent, ItemWithContent } from "../utils/board";
 
 const POLLING_INTERVAL = 1_000;
 
 export const useTrackActiveElement = (
-  items: Item[],
-  onContent: (items: Item[]) => void
+  items: ItemWithContent[],
+  onContent: (items: ItemWithContent[]) => void,
+  pauseTracking: boolean
 ) => {
   useEffect(() => {
-    if (items.length !== 1) {
+    if (items.length !== 1 || pauseTracking) {
       return;
     }
 
     const activeItem = items[0];
-
-    if (!isObjectWithContent(activeItem)) {
-      return;
-    }
 
     let cancelled = false;
 
@@ -49,5 +45,5 @@ export const useTrackActiveElement = (
       cancelled = true;
       clearInterval(interval);
     };
-  }, [items, onContent]);
+  }, [items, onContent, pauseTracking]);
 };

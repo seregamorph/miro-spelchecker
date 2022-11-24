@@ -1,21 +1,23 @@
-import { Item } from "@mirohq/websdk-types";
 import { SpellCheckResult } from "./api";
-import { isObjectWithContent } from "./board";
+import { ItemWithContent } from "./board";
 
 export interface SpellCheckList {
   check: SpellCheckResult;
-  item: Item;
+  item: ItemWithContent;
 }
 export const linkChecksWithItems = (
-  checks: SpellCheckResult[],
-  items: Item[]
+  items: ItemWithContent[],
+  checks: SpellCheckResult[] = []
 ): SpellCheckList[] => {
-  const itemsObj = items.reduce<{ [id: string]: Item }>((acc, item) => {
-    return {
-      ...acc,
-      [item.id]: item,
-    };
-  }, {});
+  const itemsObj = items.reduce<{ [id: string]: ItemWithContent }>(
+    (acc, item) => {
+      return {
+        ...acc,
+        [item.id]: item,
+      };
+    },
+    {}
+  );
 
   return checks.reduce<SpellCheckList[]>((acc, check) => {
     const relatedItem = itemsObj[check.elementId];
@@ -34,14 +36,10 @@ export const linkChecksWithItems = (
 };
 
 export const applySuggestion = async (
-  item: Item,
+  item: ItemWithContent,
   check: SpellCheckResult,
   suggestion: string
 ) => {
-  if (!isObjectWithContent(item)) {
-    return;
-  }
-
   const fromPos = check.fromPos;
   const toPos = check.toPos;
 
@@ -52,4 +50,5 @@ export const applySuggestion = async (
   ].join("");
 
   await item.sync();
+  return item;
 };

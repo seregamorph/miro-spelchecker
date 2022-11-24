@@ -1,23 +1,25 @@
-import { FC, KeyboardEventHandler, useState } from "react";
-import { Item } from "@mirohq/websdk-types";
+import { FC, KeyboardEventHandler } from "react";
 import cn from "classnames";
-import checkboxIcon from "mirotone/dist/icons/checkbox.svg";
-import { SpellCheckResult } from "../../utils/api";
 import { Button } from "../ui/Button";
-import { applySuggestion } from "../../utils/checks";
-import { isObjectWithContent } from "../../utils/board";
+import { applySuggestion, SpellCheckList } from "../../utils/checks";
+import { isObjectWithContent, ItemWithContent } from "../../utils/board";
 import { ContentHighlights } from "../ContentHighlights/ContentHighlights";
 import styles from "./SpellCheckCard.module.css";
 
 const MAX_SUGGESTIONS_COUNT = 3;
 
 interface Props {
-  check: SpellCheckResult;
-  item: Item;
+  data: SpellCheckList;
+  disabled: boolean;
+  onBeforeFix?: VoidFunction;
+  onAfterFix?: (item: ItemWithContent) => void;
 }
-export const SpellCheckCard: FC<Props> = ({ item, check }) => {
-  const [replaced, setReplaced] = useState(false);
-
+export const SpellCheckCard: FC<Props> = ({
+  data: { item, check },
+  disabled,
+  onBeforeFix,
+  onAfterFix,
+}) => {
   const zoomToElement = async () => {
     await miro.board.viewport.zoomTo(item);
   };
@@ -30,8 +32,9 @@ export const SpellCheckCard: FC<Props> = ({ item, check }) => {
 
   const fixCheck = async (suggestion: string) => {
     try {
-      await applySuggestion(item, check, suggestion);
-      setReplaced(true);
+      onBeforeFix?.();
+      const updated = await applySuggestion(item, check, suggestion);
+      onAfterFix?.(updated);
     } catch (err) {
       console.log("Unable to apply the suggestion", err);
     }
@@ -46,47 +49,41 @@ export const SpellCheckCard: FC<Props> = ({ item, check }) => {
     .slice(0, MAX_SUGGESTIONS_COUNT);
 
   return (
-    <section className={styles.card}>
-      <h4
-        className={cn("h4", styles.header)}
-        onClick={zoomToElement}
-        onKeyDown={onKeyDown}
-        role="button"
-        tabIndex={0}
-      >
-        <ContentHighlights check={check} replaced={replaced} />
-      </h4>
-      <div className={cn("grid", styles.body)}>
-        <div
-          className={cn("cs1", "ce12", "grid", {
-            "align-self-center": replaced || !suggestions.length,
-          })}
+    <div className={styles.wrapper}>
+      <section className={cn("app-card", styles.card)}>
+        <h4
+          className={cn("h4", styles.header)}
+          onClick={zoomToElement}
+          onKeyDown={onKeyDown}
+          role="button"
+          tabIndex={0}
         >
-          {replaced ? (
-            <>
-              <img className={styles.success} src={checkboxIcon} alt="" />
-              <span className={cn("p-small", styles.done)}>Done</span>
-            </>
-          ) : (
-            <>
-              {suggestions.map((suggestion) => (
-                <p key={suggestion}>
-                  <Button
-                    size="small"
-                    type="secondary"
-                    onClick={() => fixCheck(suggestion)}
-                  >
-                    {suggestion}
-                  </Button>
-                </p>
-              ))}
-              {!suggestions.length && (
-                <p className="p-small cs1 ce12">{check.message}</p>
-              )}
-            </>
-          )}
+          <ContentHighlights check={check} />
+        </h4>
+        <div className={cn("grid", styles.body)}>
+          <div
+            className={cn("cs1", "ce12", "grid", {
+              "align-self-center": !suggestions.length,
+            })}
+          >
+            {suggestions.map((suggestion) => (
+              <p key={suggestion}>
+                <Button
+                  size="small"
+                  type="secondary"
+                  onClick={() => fixCheck(suggestion)}
+                  disabled={disabled}
+                >
+                  {suggestion}
+                </Button>
+              </p>
+            ))}
+            {!suggestions.length && (
+              <p className="p-small cs1 ce12">{check.message}</p>
+            )}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 };
