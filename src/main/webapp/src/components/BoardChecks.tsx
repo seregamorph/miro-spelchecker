@@ -28,6 +28,7 @@ export const BoardChecks: FC<Props> = ({
 
   const onRefresh = useCallback(async () => {
     setIsLoading(true);
+    setIsError(false);
     try {
       const boardItems = await miro.board.get({ type: OBJECTS_WITH_CONTENT });
       const itemsWithContent = getBoardObjectsWithContent(boardItems);
@@ -40,6 +41,7 @@ export const BoardChecks: FC<Props> = ({
       setList(newList);
     } catch (err) {
       setIsError(true);
+      setList([]);
     } finally {
       setIsLoading(false);
     }

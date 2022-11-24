@@ -39,6 +39,7 @@ export const SelectedElementsChecks: FC<Props> = ({
   useTrackActiveElement(items, setItems, pauseTracking);
 
   const onRefresh = useCallback(async () => {
+    setIsError(false);
     if (!items.length) {
       setList([]);
       return;
@@ -58,6 +59,7 @@ export const SelectedElementsChecks: FC<Props> = ({
       setList(newList);
     } catch (err) {
       setIsError(true);
+      setList([]);
     } finally {
       setIsLoading(false);
     }
