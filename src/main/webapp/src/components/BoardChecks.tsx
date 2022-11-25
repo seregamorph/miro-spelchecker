@@ -1,14 +1,9 @@
 import { FC, useCallback, useEffect, useState } from "react";
-import {
-  getBoardObjectsWithContent,
-  getContentFromElements,
-  OBJECTS_WITH_CONTENT,
-} from "../utils/board";
-import { linkChecksWithItems, SpellCheckList } from "../utils/checks";
+import { SpellCheckList } from "../utils/checks";
 import { SupportedLanguage } from "../utils/language";
 import { StatusWrapper } from "./StatusWrapper/StatusWrapper";
 import { SpellCheckerCardList } from "./SpellCheckerCardList/SpellCheckerCardList";
-import { runSpellCheckRequest } from "../utils/api";
+import { runBoardSpellCheck } from "../utils/spellCheck";
 
 interface Props {
   active: boolean;
@@ -30,14 +25,7 @@ export const BoardChecks: FC<Props> = ({
     setIsLoading(true);
     setIsError(false);
     try {
-      const boardItems = await miro.board.get({ type: OBJECTS_WITH_CONTENT });
-      const itemsWithContent = getBoardObjectsWithContent(boardItems);
-      const content = getContentFromElements(itemsWithContent);
-      const newChecks = await runSpellCheckRequest({
-        language,
-        elements: content,
-      });
-      const newList = linkChecksWithItems(itemsWithContent, newChecks);
+      const newList = await runBoardSpellCheck(language);
       setList(newList);
     } catch (err) {
       setIsError(true);

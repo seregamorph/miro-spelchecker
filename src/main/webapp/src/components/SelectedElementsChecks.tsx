@@ -1,17 +1,13 @@
 import { FC, useCallback, useEffect, useState } from "react";
 import cn from "classnames";
 import { useTrackActiveElement } from "../hooks/useTrackActiveElement";
-import { linkChecksWithItems, SpellCheckList } from "../utils/checks";
+import { SpellCheckList } from "../utils/checks";
 import { SupportedLanguage } from "../utils/language";
 import { NoElementsSelected } from "./NoElementsSelected/NoElementsSelected";
 import { StatusWrapper } from "./StatusWrapper/StatusWrapper";
 import { SpellCheckerCardList } from "./SpellCheckerCardList/SpellCheckerCardList";
-import {
-  getBoardObjectsWithContent,
-  getContentFromElements,
-  ItemWithContent,
-} from "../utils/board";
-import { runSpellCheckRequest } from "../utils/api";
+import { ItemWithContent } from "../utils/board";
+import { runElementsSpellCHeck } from "../utils/spellCheck";
 
 interface Props {
   active: boolean;
@@ -46,16 +42,7 @@ export const SelectedElementsChecks: FC<Props> = ({
     }
     setIsLoading(true);
     try {
-      const boardItems = await miro.board.get({
-        id: items.map(({ id }) => id),
-      });
-      const itemsWithContent = getBoardObjectsWithContent(boardItems);
-      const content = getContentFromElements(itemsWithContent);
-      const newChecks = await runSpellCheckRequest({
-        language,
-        elements: content,
-      });
-      const newList = linkChecksWithItems(itemsWithContent, newChecks);
+      const newList = await runElementsSpellCHeck(language, items);
       setList(newList);
     } catch (err) {
       setIsError(true);
