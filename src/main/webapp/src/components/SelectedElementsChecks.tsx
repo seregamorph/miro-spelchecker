@@ -1,18 +1,17 @@
 import { FC, useCallback, useEffect, useState } from "react";
 import cn from "classnames";
-import { useTrackActiveElement } from "../hooks/useTrackActiveElement";
+import { BoardNode } from "@mirohq/websdk-types";
 import { SpellCheckList } from "../utils/checks";
 import { SupportedLanguage } from "../utils/language";
 import { NoElementsSelected } from "./NoElementsSelected/NoElementsSelected";
 import { StatusWrapper } from "./StatusWrapper/StatusWrapper";
 import { SpellCheckerCardList } from "./SpellCheckerCardList/SpellCheckerCardList";
-import { ItemWithContent } from "../utils/board";
 import { runElementsSpellCHeck } from "../utils/spellCheck";
 
 interface Props {
   active: boolean;
-  items: ItemWithContent[];
-  setItems: (items: ItemWithContent[]) => void;
+  items: BoardNode[];
+  refreshSelection: VoidFunction;
   switchToAll: VoidFunction;
   onActivate: (fn: VoidFunction) => void;
   className: string;
@@ -21,7 +20,7 @@ interface Props {
 export const SelectedElementsChecks: FC<Props> = ({
   active,
   items,
-  setItems,
+  refreshSelection,
   switchToAll,
   onActivate,
   className,
@@ -30,9 +29,6 @@ export const SelectedElementsChecks: FC<Props> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [list, setList] = useState<SpellCheckList[]>([]);
-
-  const [pauseTracking, setPauseTracking] = useState(false);
-  useTrackActiveElement(items, setItems, pauseTracking);
 
   const onRefresh = useCallback(async () => {
     setIsError(false);
@@ -57,33 +53,12 @@ export const SelectedElementsChecks: FC<Props> = ({
     await onRefresh();
   }, [onRefresh]);
 
-  const onBeforeFix = useCallback(() => {
-    setPauseTracking(true);
-  }, []);
-
-  const onAfterFix = useCallback(
-    (item: ItemWithContent) => {
-      setItems([item]);
-    },
-    [setItems]
-  );
-
   useEffect(() => {
     if (!active) {
       return;
     }
 
-    let cancelled = false;
-
-    onRefresh().then(() => {
-      if (cancelled) {
-        return;
-      }
-      setPauseTracking(false);
-    });
-    return () => {
-      cancelled = true;
-    };
+    onRefresh();
   }, [onRefresh, active]);
 
   useEffect(() => {
@@ -117,8 +92,7 @@ export const SelectedElementsChecks: FC<Props> = ({
         className={className}
         items={list}
         disabled={isLoading}
-        onAfterFix={onAfterFix}
-        onBeforeFix={onBeforeFix}
+        onFix={refreshSelection}
       />
     </StatusWrapper>
   );

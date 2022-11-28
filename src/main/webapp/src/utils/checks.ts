@@ -1,54 +1,40 @@
 import { SpellCheckResult } from "./api";
-import { ItemWithContent } from "./board";
+import { AnchoredElementContent, WithAnchor } from "./extractors";
 
-export interface SpellCheckList {
+export type SpellCheckList = WithAnchor & {
   check: SpellCheckResult;
-  item: ItemWithContent;
-}
+};
+
 export const linkChecksWithItems = (
-  items: ItemWithContent[],
+  content: AnchoredElementContent[],
   checks: SpellCheckResult[] = []
 ): SpellCheckList[] => {
-  const itemsObj = items.reduce<{ [id: string]: ItemWithContent }>(
+  const anchors = content.reduce<Record<string, AnchoredElementContent>>(
     (acc, item) => {
       return {
         ...acc,
-        [item.id]: item,
+        [item.elementId]: item,
       };
     },
     {}
   );
 
   return checks.reduce<SpellCheckList[]>((acc, check) => {
-    const relatedItem = itemsObj[check.elementId];
-    if (!relatedItem) {
+    const elementContent = anchors[check.elementId];
+
+    if (!elementContent) {
       return acc;
     }
+
+    const { anchorId, property } = elementContent;
 
     return [
       ...acc,
       {
         check,
-        item: relatedItem,
+        anchorId,
+        property,
       },
     ];
   }, []);
-};
-
-export const applySuggestion = async (
-  item: ItemWithContent,
-  check: SpellCheckResult,
-  suggestion: string
-) => {
-  const fromPos = check.fromPos;
-  const toPos = check.toPos;
-
-  item.content = [
-    item.content.slice(0, fromPos),
-    suggestion,
-    item.content.slice(toPos),
-  ].join("");
-
-  await item.sync();
-  return item;
 };

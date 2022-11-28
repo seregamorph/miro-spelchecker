@@ -1,4 +1,4 @@
-import { ElementContent } from "./board";
+import { ElementContent } from "./extractors";
 import { SupportedLanguage } from "./language";
 
 let API_TOKEN = "";
@@ -26,12 +26,9 @@ export interface SpellCheckResult {
   suggestedReplacements: string[];
 }
 
-export interface RequestData {
-  elements: ElementContent[];
-  language: SupportedLanguage;
-}
 export const runSpellCheckRequest = (
-  payload: RequestData
+  elements: ElementContent[],
+  language: SupportedLanguage
 ): Promise<SpellCheckResult[]> => {
   const apiHost = import.meta.env.SPELLCHECK_API_HOST || document.location.href;
   const url = new URL("/spellcheck", apiHost);
@@ -40,7 +37,10 @@ export const runSpellCheckRequest = (
     .then((token) => {
       return fetch(url, {
         method: "POST",
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+          elements,
+          language,
+        }),
         headers: {
           "Content-Type": "application/json",
           "X-Miro-Token": token,

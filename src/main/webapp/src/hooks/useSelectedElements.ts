@@ -1,14 +1,10 @@
-import { useEffect, useState } from "react";
-import { SelectionUpdateEvent } from "@mirohq/websdk-types";
-import { getBoardObjectsWithContent, ItemWithContent } from "../utils/board";
+import { useCallback, useEffect, useState } from "react";
+import { BoardNode, SelectionUpdateEvent } from "@mirohq/websdk-types";
 
 export const useSelectedElements = () => {
-  const state = useState<ItemWithContent[] | undefined>(undefined);
-  const [, setItems] = state;
+  const [items, setItems] = useState<BoardNode[] | undefined>(undefined);
 
-  useEffect(() => {
-    let cancelled = false;
-
+  const refreshSelection = useCallback(() => {
     miro.board
       .getSelection()
       .catch(() => {
@@ -16,29 +12,27 @@ export const useSelectedElements = () => {
         return [];
       })
       .then((items) => {
-        if (cancelled) {
-          return;
-        }
-        const itemsWithContent = getBoardObjectsWithContent(items);
-        setItems(itemsWithContent);
+        setItems(items);
       });
+  }, []);
 
-    return () => {
-      cancelled = true;
-    };
-  }, [setItems]);
+  useEffect(() => {
+    refreshSelection();
+  }, [refreshSelection]);
 
   useEffect(() => {
     const onSelection = (event: SelectionUpdateEvent) => {
-      const itemsWithContent = getBoardObjectsWithContent(event.items);
-      setItems(itemsWithContent);
+      setItems(event.items);
     };
 
     miro.board.ui.on("selection:update", onSelection);
     return () => {
       miro.board.ui.off("selection:update", onSelection);
     };
-  }, [setItems]);
+  }, []);
 
-  return state;
+  return {
+    items,
+    refreshSelection,
+  };
 };

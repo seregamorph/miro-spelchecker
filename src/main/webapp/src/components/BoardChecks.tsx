@@ -70,7 +70,7 @@ export const BoardChecks: FC<Props> = ({
         className={className}
         items={list}
         disabled={isLoading}
-        onAfterFix={onRefresh}
+        onFix={onRefresh}
       />
     </StatusWrapper>
   );

@@ -1,51 +1,36 @@
-import { BoardNode, Shape, StickyNote, Text } from "@mirohq/websdk-types";
+import { SpellCheckResult } from "./api";
 
-// const ALL_OBJECT_TYPES = ['card', 'frame', 'image', 'preview', 'shape', 'sticky_note', 'text', 'embed', 'tag'];
+export const applySuggestion = async (
+  property: string,
+  check: SpellCheckResult,
+  suggestion: string
+) => {
+  const fromPos = check.fromPos;
+  const toPos = check.toPos;
+  const elements = await miro.board.get({ id: check.elementId });
+  const element = elements.shift();
+  if (!element) {
+    return;
+  }
 
-export const OBJECTS_WITH_CONTENT = ["shape", "sticky_note", "text"];
+  // @ts-expect-error Properly typecheck the property
+  element[property] = [
+    // @ts-expect-error Properly typecheck the property
+    element[property].slice(0, fromPos),
+    suggestion,
+    // @ts-expect-error Properly typecheck the property
+    element[property].slice(toPos),
+  ].join("");
 
-export type ItemWithContent = Shape | StickyNote | Text;
-
-export const isObjectWithContent = (
-  item: BoardNode
-): item is ItemWithContent => {
-  return OBJECTS_WITH_CONTENT.includes(item.type);
+  await element.sync();
+  return element;
 };
 
-export const getBoardObjectsWithContent = (
-  items: BoardNode[] = []
-): ItemWithContent[] => {
-  return items.reduce<ItemWithContent[]>((acc, item) => {
-    if (isObjectWithContent(item)) {
-      return [...acc, item];
-    }
-    return acc;
-  }, []);
-};
-
-export interface ElementContent {
-  elementId: string;
-  text: string;
-}
-
-export const getContentFromElements = (
-  items: ItemWithContent[]
-): ElementContent[] => {
-  return items.reduce<ElementContent[]>((acc, item) => {
-    if (!isObjectWithContent(item)) {
-      return acc;
-    }
-
-    if (!item.content) {
-      return acc;
-    }
-
-    return [
-      ...acc,
-      {
-        elementId: item.id,
-        text: item.content,
-      },
-    ];
-  }, []);
+export const zoomToElement = async (elementId: string): Promise<void> => {
+  const elements = await miro.board.get({ id: elementId });
+  const element = elements.shift();
+  if (!element || element.type === "tag") {
+    throw new Error("Unsupported element for zooming");
+  }
+  await miro.board.viewport.zoomTo(element);
 };

@@ -1,8 +1,8 @@
 import { FC, KeyboardEventHandler } from "react";
 import cn from "classnames";
 import { Button } from "../ui/Button";
-import { applySuggestion, SpellCheckList } from "../../utils/checks";
-import { isObjectWithContent, ItemWithContent } from "../../utils/board";
+import { SpellCheckList } from "../../utils/checks";
+import { applySuggestion, zoomToElement } from "../../utils/board";
 import { ContentHighlights } from "../ContentHighlights/ContentHighlights";
 import styles from "./SpellCheckCard.module.css";
 
@@ -11,38 +11,35 @@ const MAX_SUGGESTIONS_COUNT = 3;
 interface Props {
   data: SpellCheckList;
   disabled: boolean;
-  onBeforeFix?: VoidFunction;
-  onAfterFix?: (item: ItemWithContent) => void;
+  onFix: VoidFunction;
 }
 export const SpellCheckCard: FC<Props> = ({
-  data: { item, check },
+  data: { anchorId, property, check },
   disabled,
-  onBeforeFix,
-  onAfterFix,
+  onFix,
 }) => {
-  const zoomToElement = async () => {
-    await miro.board.viewport.zoomTo(item);
+  const zoom = async () => {
+    try {
+      await zoomToElement(anchorId);
+    } catch (err) {
+      console.error("Can not zoom to element", err);
+    }
   };
 
   const onKeyDown: KeyboardEventHandler<HTMLHeadingElement> = async (event) => {
     if (event.key === "Enter") {
-      await zoomToElement();
+      await zoom();
     }
   };
 
   const fixCheck = async (suggestion: string) => {
     try {
-      onBeforeFix?.();
-      const updated = await applySuggestion(item, check, suggestion);
-      onAfterFix?.(updated);
+      await applySuggestion(property, check, suggestion);
+      onFix();
     } catch (err) {
-      console.log("Unable to apply the suggestion", err);
+      console.error("Unable to apply the suggestion", err);
     }
   };
-
-  if (!isObjectWithContent(item)) {
-    return null;
-  }
 
   const suggestions = check.suggestedReplacements
     .filter((suggestion) => suggestion)
@@ -53,7 +50,7 @@ export const SpellCheckCard: FC<Props> = ({
       <section className={cn("app-card", styles.card)}>
         <h4
           className={cn("h4", styles.header)}
-          onClick={zoomToElement}
+          onClick={zoom}
           onKeyDown={onKeyDown}
           role="button"
           tabIndex={0}

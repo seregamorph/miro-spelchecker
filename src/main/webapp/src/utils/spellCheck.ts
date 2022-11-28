@@ -1,22 +1,20 @@
-import { GetFilter } from "@mirohq/websdk-types";
-import {
-  getBoardObjectsWithContent,
-  getContentFromElements,
-  ItemWithContent,
-  OBJECTS_WITH_CONTENT,
-} from "./board";
+import { BoardNode, GetFilter } from "@mirohq/websdk-types";
 import { runSpellCheckRequest } from "./api";
 import { linkChecksWithItems } from "./checks";
 import { SupportedLanguage } from "./language";
+import {
+  getContentFromItems,
+  getContentFromTags,
+  ElementContent,
+} from "./extractors";
 
 export const runBoardSpellCheck = async (language: SupportedLanguage) => {
-  const filter = { type: OBJECTS_WITH_CONTENT };
-  return runSpellCheck(language, filter);
+  return runSpellCheck(language);
 };
 
 export const runElementsSpellCHeck = async (
   language: SupportedLanguage,
-  items: ItemWithContent[]
+  items: BoardNode[]
 ) => {
   if (!items.length) {
     return [];
@@ -30,14 +28,27 @@ export const runElementsSpellCHeck = async (
 
 const runSpellCheck = async (
   language: SupportedLanguage,
-  filter: GetFilter
+  filter?: GetFilter
 ) => {
   const boardItems = await miro.board.get(filter);
-  const itemsWithContent = getBoardObjectsWithContent(boardItems);
-  const content = getContentFromElements(itemsWithContent);
+  const { elements, tags: tagElements } = getContentFromItems(boardItems);
+  const tagFilter: GetFilter = {
+    id: tagElements.map(({ elementId }) => elementId),
+  };
+  const boardTags = await miro.board.get(tagFilter);
+  const tags = getContentFromTags(boardTags, tagElements);
+  const content = [...elements, ...tags];
   if (!content.length) {
     return [];
   }
-  const newChecks = await runSpellCheckRequest({ language, elements: content });
-  return linkChecksWithItems(itemsWithContent, newChecks);
+
+  const requestData: ElementContent[] = content.map(({ elementId, text }) => {
+    return {
+      elementId,
+      text,
+    };
+  });
+
+  const checks = await runSpellCheckRequest(requestData, language);
+  return linkChecksWithItems(content, checks);
 };
