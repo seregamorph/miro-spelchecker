@@ -6,15 +6,23 @@ import org.languagetool.language.*;
 public class LanguageFactory {
 
     public static Language getLanguage(String code) {
-        return switch (code) {
-            case "en-US" -> new AmericanEnglish();
-            case "en-EN" -> new BritishEnglish();
-            case "es-ES" -> new Spanish();
-            case "de" -> new GermanyGerman();
-            case "ru-RU" -> new Russian();
-            case "fr-FR" -> new French();
-            case "jp-JP" -> new Japanese();
-            default -> new AmericanEnglish();
-        };
+        switch (code) {
+            case "en-US":
+                return new AmericanEnglish();
+            case "en-EN":
+                return new BritishEnglish();
+            case "es-ES":
+                return new Spanish();
+            case "de":
+                return new GermanyGerman();
+            case "ru-RU":
+                return new Russian();
+            case "fr-FR":
+                return new French();
+            case "jp-JP":
+                return new Japanese();
+            default:
+                return new AmericanEnglish();
+        }
     }
 }
