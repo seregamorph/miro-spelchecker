@@ -19,6 +19,12 @@
   color: var(--green800);
 }
 
+.suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xsmall);
+}
+
 .success {
   /*
         There is not way to control the icon color except making a filter.

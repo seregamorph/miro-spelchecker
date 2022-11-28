@@ -61,7 +61,7 @@ export const SpellCheckCard: FC<Props> = ({
           <ContentHighlights check={check} />
         </h4>
         <div className={cn("grid", styles.body)}>
-          <div className="cs1 ce12 sc-flex sc-g-xs sc-wrap">
+          <div className={cn("cs1", "ce12", styles.suggestions)}>
             {suggestions.length ? (
               suggestions.map((suggestion) => (
                 <p key={suggestion}>

@@ -6,7 +6,7 @@ import { SelectedElementsChecks } from "../SelectedElementsChecks";
 import { BoardChecks } from "../BoardChecks";
 import { useSelectedElements } from "../../hooks/useSelectedElements";
 import { LanguageSelector } from "../LanguageSelector";
-import { RefreshButton } from "../RefreshButton";
+import { RefreshButton } from "../RefreshButton/RefreshButton";
 import { getValidatedLanguage } from "../../utils/language";
 import { voidFn } from "../../utils/common";
 import styles from "./App.module.css";
@@ -55,7 +55,7 @@ export const App: FC = () => {
           <p className="cs1 ce9">
             <LanguageSelector language={language} setLanguage={setLanguage} />
           </p>
-          <div className="cs10 ce12 align-self-end">
+          <div className={cn("cs10", "ce12", styles.refresh)}>
             <RefreshButton onClick={refresh} />
           </div>
         </footer>
