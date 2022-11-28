@@ -18,7 +18,7 @@
     <properties>
         <java.version>11</java.version>
 
-        <node.version>v18.12.1</node.version>
+        <node.version>v16.14.1</node.version>
         <yarn.version>v1.22.19</yarn.version>
         <webapp.dir>src/main/webapp</webapp.dir>
     </properties>
