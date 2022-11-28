@@ -61,25 +61,22 @@ export const SpellCheckCard: FC<Props> = ({
           <ContentHighlights check={check} />
         </h4>
         <div className={cn("grid", styles.body)}>
-          <div
-            className={cn("cs1", "ce12", "grid", {
-              "align-self-center": !suggestions.length,
-            })}
-          >
-            {suggestions.map((suggestion) => (
-              <p key={suggestion}>
-                <Button
-                  size="small"
-                  type="secondary"
-                  onClick={() => fixCheck(suggestion)}
-                  disabled={disabled}
-                >
-                  {suggestion}
-                </Button>
-              </p>
-            ))}
-            {!suggestions.length && (
-              <p className="p-small cs1 ce12">{check.message}</p>
+          <div className="cs1 ce12 sc-flex sc-g-xs sc-wrap">
+            {suggestions.length ? (
+              suggestions.map((suggestion) => (
+                <p key={suggestion}>
+                  <Button
+                    size="small"
+                    type="secondary"
+                    onClick={() => fixCheck(suggestion)}
+                    disabled={disabled}
+                  >
+                    {suggestion}
+                  </Button>
+                </p>
+              ))
+            ) : (
+              <p className="p-small">{check.message}</p>
             )}
           </div>
         </div>
