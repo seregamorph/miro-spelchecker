@@ -34,25 +34,3 @@ li {
   margin: 0;
   padding: 0;
 }
-
-/* Add some re-usable classes */
-
-.cursor-pointer {
-  cursor: pointer;
-}
-
-.align-self-end {
-  align-self: flex-end;
-}
-
-.align-self-center {
-  align-self: center;
-}
-
-.align-self-start {
-  align-self: flex-start;
-}
-
-.justify-self--end {
-  justify-self: flex-end;
-}

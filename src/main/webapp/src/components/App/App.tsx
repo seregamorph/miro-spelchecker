@@ -6,7 +6,7 @@ import { SelectedElementsChecks } from "../SelectedElementsChecks";
 import { BoardChecks } from "../BoardChecks";
 import { useSelectedElements } from "../../hooks/useSelectedElements";
 import { LanguageSelector } from "../LanguageSelector";
-import { RefreshButton } from "../RefreshButton";
+import { RefreshButton } from "../RefreshButton/RefreshButton";
 import { getValidatedLanguage } from "../../utils/language";
 import { voidFn } from "../../utils/common";
 import styles from "./App.module.css";
@@ -15,7 +15,7 @@ export const App: FC = () => {
   const tabs = useMemo(() => getTabs(), []);
   const [refresh, setRefresh] = useState<VoidFunction>(() => voidFn);
   const [activeTab, setActiveTab] = useState(tabs.length ? tabs[0].id : "");
-  const [selectedItems, setSelectedItems] = useSelectedElements();
+  const { items: selectedItems, refreshSelection } = useSelectedElements();
   const [language, setLanguage] = useState(getValidatedLanguage);
 
   const setRefreshHandler = useCallback((fn: VoidFunction) => {
@@ -39,7 +39,7 @@ export const App: FC = () => {
         <SelectedElementsChecks
           active={activeTab === "selected"}
           items={selectedItems}
-          setItems={setSelectedItems}
+          refreshSelection={refreshSelection}
           switchToAll={switchToAll}
           onActivate={setRefreshHandler}
           className={cn("cs1", "ce12", styles.wrapper)}
@@ -55,7 +55,7 @@ export const App: FC = () => {
           <p className="cs1 ce9">
             <LanguageSelector language={language} setLanguage={setLanguage} />
           </p>
-          <div className="cs10 ce12 align-self-end">
+          <div className={cn("cs10", "ce12", styles.refresh)}>
             <RefreshButton onClick={refresh} />
           </div>
         </footer>
