@@ -1,6 +1,9 @@
 import { SpellCheckResult } from "./api";
 import { AnchoredElementContent, WithAnchor } from "./extractors";
 
+export const getFullId = ({ elementId, property }: AnchoredElementContent) =>
+  `${elementId}:${property}`;
+
 export type SpellCheckList = WithAnchor & {
   check: SpellCheckResult;
 };
@@ -13,7 +16,7 @@ export const linkChecksWithItems = (
     (acc, item) => {
       return {
         ...acc,
-        [item.elementId]: item,
+        [getFullId(item)]: item,
       };
     },
     {}
@@ -26,12 +29,15 @@ export const linkChecksWithItems = (
       return acc;
     }
 
-    const { anchorId, property } = elementContent;
+    const { anchorId, property, elementId } = elementContent;
 
     return [
       ...acc,
       {
-        check,
+        check: {
+          ...check,
+          elementId,
+        },
         anchorId,
         property,
       },
