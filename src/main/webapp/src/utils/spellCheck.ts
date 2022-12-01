@@ -1,6 +1,6 @@
 import { BoardNode, GetFilter } from "@mirohq/websdk-types";
 import { runSpellCheckRequest } from "./api";
-import { linkChecksWithItems } from "./checks";
+import { getFullId, linkChecksWithItems } from "./checks";
 import { SupportedLanguage } from "./language";
 import {
   getContentFromItems,
@@ -32,6 +32,7 @@ const runSpellCheck = async (
 ) => {
   const boardItems = await miro.board.get(filter);
   const { elements, tags: tagElements } = getContentFromItems(boardItems);
+
   const tagFilter: GetFilter = {
     id: tagElements.map(({ elementId }) => elementId),
   };
@@ -42,10 +43,10 @@ const runSpellCheck = async (
     return [];
   }
 
-  const requestData: ElementContent[] = content.map(({ elementId, text }) => {
+  const requestData: ElementContent[] = content.map((elementContent) => {
     return {
-      elementId,
-      text,
+      elementId: getFullId(elementContent),
+      text: elementContent.text,
     };
   });
 
