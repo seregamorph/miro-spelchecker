@@ -22,7 +22,7 @@ public class LanguageFactory {
             case "jp-JP":
                 return new Japanese();
             default:
-                return new AmericanEnglish();
+                return null;
         }
     }
 }

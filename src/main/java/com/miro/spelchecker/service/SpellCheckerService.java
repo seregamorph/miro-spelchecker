@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface SpellCheckerService {
     List<SpelCheckResponseElement> spellCheck(String language, SpelCheckRequestElement element) throws IOException;
+
+    List<SpelCheckResponseElement> spellCheck(String language, List<SpelCheckRequestElement> element) throws IOException;
 }
