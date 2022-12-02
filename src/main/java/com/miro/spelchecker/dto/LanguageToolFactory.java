@@ -10,6 +10,7 @@ public class LanguageToolFactory {
     private static final JLanguageTool americanEnglishLangTool = new JLanguageTool(new AmericanEnglish(), null, new ResultCache(1000L));
 
     public static JLanguageTool getLanguageTool(String languageCode) throws JsonProcessingException {
+        americanEnglishLangTool.disableRule("UPPERCASE_SENTENCE_START");
         switch (languageCode) {
             case "en-EN":
                 return new JLanguageTool(new BritishEnglish());
