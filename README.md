@@ -4,8 +4,15 @@
 
 This is a Spring Boot application. To run it execute the main method of com.miro.spelchecker.SpelcheckerApplication. Or: 
 
+Run with SSL (for local execution)
 ```shell
 ./mvnw clean spring-boot:run -Dspring-boot.run.profiles=ssl,local
+```
+
+Build and run without SSL (for execution on hosting provider)
+```shell
+./mvnw clean package
+./mvnw spring-boot:run -Dspring-boot.run.profiles=local
 ```
 
 ## Sample GET Request
