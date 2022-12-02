@@ -1,7 +1,7 @@
 package com.miro.spelchecker.service;
 
 import com.miro.spelchecker.controller.JsoupHelper;
-import com.miro.spelchecker.dto.LanguageFactory;
+import com.miro.spelchecker.dto.LanguageToolFactory;
 import com.miro.spelchecker.dto.SpelCheckRequestElement;
 import com.miro.spelchecker.dto.SpelCheckResponseElement;
 import org.jsoup.Jsoup;
@@ -26,7 +26,7 @@ public class DefaultSpellCheckerService implements SpellCheckerService {
 
     @Override
     public List<SpelCheckResponseElement> spellCheck(String language, SpelCheckRequestElement element) throws IOException {
-        JLanguageTool langTool = new JLanguageTool(LanguageFactory.getLanguage(language));
+        JLanguageTool langTool = LanguageToolFactory.getLanguageTool(language);
         langTool.activateLanguageModelRules(new File("/data/google-ngram-data"));
 
         Parser parser = Parser.htmlParser().setTrackPosition(true);
@@ -65,7 +65,6 @@ public class DefaultSpellCheckerService implements SpellCheckerService {
             responseMatches.add(new SpelCheckResponseElement(element.getElementId(), plainText, fromPosPlain, toPosPlain, fromPos, toPos, match.getMessage(), match.getSuggestedReplacements()));
 
         });
-
         return responseMatches;
     }
 
