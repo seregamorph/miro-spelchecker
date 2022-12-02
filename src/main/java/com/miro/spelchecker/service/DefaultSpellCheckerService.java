@@ -18,7 +18,7 @@ import java.util.*;
 @Service
 public class DefaultSpellCheckerService implements SpellCheckerService {
 
-    private static final String[] charsToBeEncoded = new String[]{":", "/", "?", "#", "[", "]", "@", "!", "$", "&", "'", "(", ")", "*", "+", ",", ";", "="};
+    private static final String[] charsToBeEncoded = new String[]{":", "?", "#", "[", "]", "@", "!", "$", "&", "'", "(", ")", "*", "+", ",", ";", "="};
 
     private static long countNumberOfOccurrences(String inputStr, String[] items) {
         return Arrays.stream(items).filter(inputStr::contains).count();
