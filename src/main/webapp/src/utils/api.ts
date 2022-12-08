@@ -43,7 +43,7 @@ export const runSpellCheckRequest = (
         }),
         headers: {
           "Content-Type": "application/json",
-          "X-Miro-Token": token,
+          Authorization: `Bearer ${token}`,
         },
       });
     })
