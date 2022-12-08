@@ -8,8 +8,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Objects;
 
 public class SecurityHeadersFilter extends OncePerRequestFilter {
+
+    private final String accessControlAllowOrigin;
+
+    public SecurityHeadersFilter() {
+        this.accessControlAllowOrigin = Objects.toString(System.getenv("HOST_URL"), "*");
+    }
 
     @Override
     protected void doFilterInternal(
@@ -17,7 +24,7 @@ public class SecurityHeadersFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
-        response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
+        response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, accessControlAllowOrigin);
         response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "Content-Type");
         response.setHeader("Content-Security-Policy", "default-src 'self'; script-src-elem 'self' miro.com; style-src-elem 'self' fonts.googleapis.com; font-src 'self' fonts.gstatic.com; img-src 'self' data:");
         response.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
