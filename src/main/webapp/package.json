@@ -2,6 +2,9 @@
   "name": "spellchecker",
   "version": "0.1.0",
   "license": "MIT",
+  "repository": {
+    "url": "https://github.com/seregamorph/miro-spelchecker"
+  },
   "scripts": {
     "start": "vite",
     "build": "vite build",
