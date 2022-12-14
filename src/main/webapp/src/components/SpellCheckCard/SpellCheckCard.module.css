@@ -12,7 +12,7 @@
 }
 
 .card {
-  --accent-color: #f4823e;
+  --accent-color: var(--warning);
 }
 
 .done {

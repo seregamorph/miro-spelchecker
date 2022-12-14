@@ -4,20 +4,28 @@ import { Button } from "../ui/Button";
 
 interface Props {
   onClick: VoidFunction;
-  loading?: boolean;
+  isSettingsShown: boolean;
   className?: string;
 }
-export const RefreshButton: FC<Props> = ({ loading, className, onClick }) => {
+export const SettingsButton: FC<Props> = ({
+  onClick,
+  isSettingsShown,
+  className,
+}) => {
   return (
     <p className={cn("centered", className)}>
       <Button
         onClick={onClick}
-        loading={loading}
         type="secondary"
         size="small"
-        label="Refresh spelling suggestions"
+        label="Show settings menu"
       >
-        <span className="icon icon-refresh ch-cursor-pointer" />
+        <span
+          className={cn("ch-cursor-pointer", "icon", {
+            "icon-settings": !isSettingsShown,
+            "icon-card-list": isSettingsShown,
+          })}
+        />
       </Button>
     </p>
   );

@@ -1,0 +1,5 @@
+.warning {
+  color: var(--warning);
+  display: inline-block;
+  padding-top: var(--space-xxsmall);
+}

@@ -1,5 +1,12 @@
 @import "mirotone/dist/styles.css";
 
+/* Extra variables */
+
+:root {
+  --warning: #f4823e;
+  --background-primary: #eeeeee;
+}
+
 /* Reset browser defaults */
 *,
 *:before,
@@ -9,7 +16,7 @@
 
 html {
   height: 100%;
-  background-color: #eee;
+  background-color: var(--background-primary);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system,
     BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans,
     sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol,
@@ -33,4 +40,10 @@ li {
   list-style-type: none;
   margin: 0;
   padding: 0;
+}
+
+/* App specific styles for the application */
+
+.ch-cursor-pointer {
+  cursor: pointer;
 }
