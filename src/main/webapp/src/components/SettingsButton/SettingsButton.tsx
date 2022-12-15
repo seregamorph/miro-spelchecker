@@ -5,20 +5,23 @@ import { Icon } from "../ui/Icon/Icon";
 
 interface Props {
   onClick: VoidFunction;
-  loading?: boolean;
+  isSettingsShown: boolean;
   className?: string;
 }
-export const RefreshButton: FC<Props> = ({ loading, className, onClick }) => {
+export const SettingsButton: FC<Props> = ({
+  onClick,
+  isSettingsShown,
+  className,
+}) => {
   return (
     <p className={cn("centered", className)}>
       <Button
         onClick={onClick}
-        loading={loading}
         type="secondary"
         size="small"
-        label="Refresh spelling suggestions"
+        label={isSettingsShown ? "Hide settings menu" : "Show settings menu"}
       >
-        <Icon icon="refresh" />
+        <Icon icon={isSettingsShown ? "card-list" : "settings"} />
       </Button>
     </p>
   );

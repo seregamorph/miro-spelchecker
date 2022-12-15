@@ -5,10 +5,10 @@ import { getTabs } from "../../utils/tabs";
 import { SelectedElementsChecks } from "../SelectedElementsChecks";
 import { BoardChecks } from "../BoardChecks";
 import { useSelectedElements } from "../../hooks/useSelectedElements";
-import { LanguageSelector } from "../LanguageSelector";
-import { RefreshButton } from "../RefreshButton/RefreshButton";
 import { getValidatedLanguage } from "../../utils/language";
 import { voidFn } from "../../utils/common";
+import { AppFooter } from "../AppFooter/AppFooter";
+import { SettingsPage } from "../SettingsPage/SettingsPage";
 import styles from "./App.module.css";
 
 export const App: FC = () => {
@@ -17,6 +17,12 @@ export const App: FC = () => {
   const [activeTab, setActiveTab] = useState(tabs.length ? tabs[0].id : "");
   const { items: selectedItems, refreshSelection } = useSelectedElements();
   const [language, setLanguage] = useState(getValidatedLanguage);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+
+  const toggleSettings = useCallback(
+    () => setSettingsOpen((isOpen) => !isOpen),
+    []
+  );
 
   const setRefreshHandler = useCallback((fn: VoidFunction) => {
     setRefresh(() => fn);
@@ -34,10 +40,13 @@ export const App: FC = () => {
     <StrictMode>
       <article className={cn("grid", "grid-container", styles.container)}>
         <header className="cs1 ce12">
-          <Tabs tabs={tabs} activeTab={activeTab} onSelect={setActiveTab} />
+          {!settingsOpen && (
+            <Tabs tabs={tabs} activeTab={activeTab} onSelect={setActiveTab} />
+          )}
         </header>
+
         <SelectedElementsChecks
-          active={activeTab === "selected"}
+          active={activeTab === "selected" && !settingsOpen}
           items={selectedItems}
           refreshSelection={refreshSelection}
           switchToAll={switchToAll}
@@ -46,19 +55,25 @@ export const App: FC = () => {
           language={language}
         />
         <BoardChecks
-          active={activeTab === "total"}
+          active={activeTab === "total" && !settingsOpen}
           onActivate={setRefreshHandler}
           className={cn("cs1", "ce12", styles.wrapper)}
           language={language}
         />
-        <footer className={cn("cs1", "ce12", "grid", styles.footer)}>
-          <p className="cs1 ce9">
-            <LanguageSelector language={language} setLanguage={setLanguage} />
-          </p>
-          <div className={cn("cs10", "ce12", styles.refresh)}>
-            <RefreshButton onClick={refresh} />
-          </div>
-        </footer>
+
+        {settingsOpen && (
+          <SettingsPage
+            className={cn("cs1", "ce12", styles.wrapper)}
+            language={language}
+            setLanguage={setLanguage}
+          />
+        )}
+
+        <AppFooter
+          reloadResults={refresh}
+          settingsOpen={settingsOpen}
+          toggleSettings={toggleSettings}
+        />
       </article>
     </StrictMode>
   );

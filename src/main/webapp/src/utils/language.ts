@@ -1,8 +1,9 @@
+import { getBrowserLanguages } from "./browser";
 import {
-  getBrowserLanguages,
+  isLocalStorageAvailable,
   LocalStorageKey,
   setLocalStorageItem,
-} from "./browser";
+} from "./localStorage";
 
 export const SUPPORTED_LANGUAGES = [
   {
@@ -54,5 +55,8 @@ export const getValidatedLanguage = (
 };
 
 export const saveLanguageSelection = (lang: SupportedLanguage) => {
+  if (!isLocalStorageAvailable()) {
+    return;
+  }
   setLocalStorageItem(LocalStorageKey.Language, lang);
 };
