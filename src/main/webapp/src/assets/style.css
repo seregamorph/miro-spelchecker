@@ -41,9 +41,3 @@ li {
   margin: 0;
   padding: 0;
 }
-
-/* App specific styles for the application */
-
-.ch-cursor-pointer {
-  cursor: pointer;
-}

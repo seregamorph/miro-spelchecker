@@ -1,6 +1,7 @@
 import { FC } from "react";
 import cn from "classnames";
 import { Button } from "../ui/Button";
+import { Icon } from "../ui/Icon/Icon";
 
 interface Props {
   onClick: VoidFunction;
@@ -17,7 +18,7 @@ export const RefreshButton: FC<Props> = ({ loading, className, onClick }) => {
         size="small"
         label="Refresh spelling suggestions"
       >
-        <span className="icon icon-refresh ch-cursor-pointer" />
+        <Icon icon="refresh" />
       </Button>
     </p>
   );

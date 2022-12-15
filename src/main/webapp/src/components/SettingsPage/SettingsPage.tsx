@@ -4,6 +4,7 @@ import { LanguageSelector } from "../LanguageSelector";
 import { SupportedLanguage } from "../../utils/language";
 import { isLocalStorageAvailable } from "../../utils/localStorage";
 import styles from "./SettingsPage.module.css";
+import { FeedbackButton } from "../FeedbackButton/FeedbackButton";
 
 interface Props {
   className: string;
@@ -26,6 +27,14 @@ export const SettingsPage: FC<Props> = ({
           </span>
         )}
       </p>
+      <div className={styles.section}>
+        <p>
+          <span className="p-small">Have something to say?</span>
+        </p>
+        <p>
+          <FeedbackButton />
+        </p>
+      </div>
     </div>
   );
 };

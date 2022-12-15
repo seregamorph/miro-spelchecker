@@ -1,6 +1,7 @@
 import { FC } from "react";
 import cn from "classnames";
 import { Button } from "../ui/Button";
+import { Icon } from "../ui/Icon/Icon";
 
 interface Props {
   onClick: VoidFunction;
@@ -18,14 +19,9 @@ export const SettingsButton: FC<Props> = ({
         onClick={onClick}
         type="secondary"
         size="small"
-        label="Show settings menu"
+        label={isSettingsShown ? "Hide settings menu" : "Show settings menu"}
       >
-        <span
-          className={cn("ch-cursor-pointer", "icon", {
-            "icon-settings": !isSettingsShown,
-            "icon-card-list": isSettingsShown,
-          })}
-        />
+        <Icon icon={isSettingsShown ? "card-list" : "settings"} />
       </Button>
     </p>
   );

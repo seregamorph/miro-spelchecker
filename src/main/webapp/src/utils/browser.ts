@@ -13,3 +13,12 @@ export const getBrowserLanguages = (): string[] => {
   }
   return lang ? [lang, navigator.language] : [navigator.language];
 };
+
+export const getParentHref = () => {
+  try {
+    const url = document.referrer;
+    return url || "";
+  } catch (err) {
+    return "";
+  }
+};

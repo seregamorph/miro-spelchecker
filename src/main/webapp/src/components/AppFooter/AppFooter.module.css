@@ -1,5 +1,5 @@
 .footer {
-  padding: 0 0 var(--space-medium) 0;
+  padding: var(--space-xxsmall) 0 var(--space-medium) 0;
 }
 
 .refresh {
