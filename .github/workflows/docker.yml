@@ -1,0 +1,35 @@
+name: Docker
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+env:
+  DOCKER_REGISTRY: public.ecr.aws
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    name: Push image
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Login to AWS ECR Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.DOCKER_REGISTRY }}
+          username: AWS
+          password: ${{ secrets.DOCKER_REPO_PASSWORD }}
+
+      - name: Publish the image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ env.DOCKER_REGISTRY }}/AWS/miro-spellchecker-app:latest
+            ${{ env.DOCKER_REGISTRY }}/AWS/miro-spellchecker-app:${{ github.sha }}
