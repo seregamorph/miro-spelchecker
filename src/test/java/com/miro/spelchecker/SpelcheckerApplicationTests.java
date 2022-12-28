@@ -24,11 +24,11 @@ class SpelcheckerApplicationTests {
 
     private static Stream<Arguments> provideEnglishStrings() {
         return Stream.of(
-                Arguments.of("<b>F</b>ramez 1", 0, 6, 3, 13)
+                //
+                  Arguments.of("<b>F</b>ramez 1", 0, 6, 3, 13)
                 , Arguments.of("Framez 1", 0, 6, 0, 6)
                 , Arguments.of("They dont go", 5, 9, 5, 9)
-                , Arguments.of("They dont' go", 5, 10, 5, 14) // because of HTML encode.
-                , Arguments.of("They <p>dont'</p> go", 6, 11, 8, 17) // because of HTML encode.
+                , Arguments.of("<html> <head></head><body><p>They</p><p>dont</p><p>go</p></body></html>", 8, 12, 40, 44 )
         );
     }
 

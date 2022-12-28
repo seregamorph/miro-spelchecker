@@ -4,6 +4,7 @@ import com.miro.spelchecker.controller.JsoupHelper;
 import com.miro.spelchecker.dto.LanguageToolFactory;
 import com.miro.spelchecker.dto.SpelCheckRequestElement;
 import com.miro.spelchecker.dto.SpelCheckResponseElement;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -20,19 +21,18 @@ import java.util.stream.Stream;
 @Service
 public class DefaultSpellCheckerService implements SpellCheckerService {
 
-    private static final String[] charsToBeEncoded = new String[]{"&", "'", "\""};
+    private static final String[] charsToBeEncoded = new String[]{"&", "\""};
     private final Parser parser = Parser.htmlParser().setTrackPosition(true);
-    private final LanguageToolFactory languageToolFactory = new LanguageToolFactory();
 
     @Override
     public List<SpelCheckResponseElement> spellCheck(String language, SpelCheckRequestElement element) throws IOException {
-        JLanguageTool langTool = languageToolFactory.getLanguageTool(language);
+        JLanguageTool langTool = LanguageToolFactory.getLanguageTool(language);
         return spellCheck(langTool, element);
     }
 
     @Override
     public List<SpelCheckResponseElement> spellCheck(String language, List<SpelCheckRequestElement> elementList) throws IOException {
-        JLanguageTool langTool = languageToolFactory.getLanguageTool(language);
+        JLanguageTool langTool = LanguageToolFactory.getLanguageTool(language);
         return elementList.stream().flatMap(element -> {
             try {
                 return spellCheck(langTool, element).stream();
@@ -65,10 +65,17 @@ public class DefaultSpellCheckerService implements SpellCheckerService {
             //Calculate how much index changes: find the textnode that this match is contained in.
             //calculate the difference between its start index in the plaintext vs in the original html.
 
-            var startNodeKey = indexMapping.keySet().stream().filter(key -> key <= match.getFromPos()).max(Comparator.naturalOrder()).get();
+            int startNodeKey;
+            var minTextIndex = indexMapping.keySet().stream().min(Comparator.naturalOrder());
+            if (minTextIndex.get() > match.getFromPos()) {
+                startNodeKey = minTextIndex.get();
+            } else {
+                startNodeKey = indexMapping.keySet().stream().filter(key -> key <= match.getFromPos()).max(Comparator.naturalOrder()).get();
+            }
             var startTextNode = indexMapping.get(startNodeKey);
-            int countOfEncodedCharactersBeforeMatchPosition = (int) countNumberOfOccurrences(plainText.substring(startNodeKey, match.getFromPos()), charsToBeEncoded);
-            int fromPos = match.getFromPos() + getTextNodeStartPosition(startTextNode) - startNodeKey + (countOfEncodedCharactersBeforeMatchPosition) * 4;
+            int countOfEncodedCharactersBeforeMatchPosition = (int) countNumberOfOccurrences(plainText.substring(startNodeKey, Math.max(startNodeKey,match.getFromPos())), charsToBeEncoded);
+            int numberOfNewLine = (int) countNumberOfOccurrences(plainText.substring(startNodeKey, Math.max(startNodeKey,match.getFromPos())), new String[] {"\n"});
+            int fromPos = match.getFromPos() + getTextNodeStartPosition(startTextNode) - Math.min(startNodeKey,match.getFromPos()) + (countOfEncodedCharactersBeforeMatchPosition) * 4 + numberOfNewLine;
 
 
             var endNodeKey = indexMapping.keySet().stream().filter(key -> key <= match.getToPos()).max(Comparator.naturalOrder()).get();
@@ -84,7 +91,8 @@ public class DefaultSpellCheckerService implements SpellCheckerService {
     }
 
     private static long countNumberOfOccurrences(String inputStr, String[] items) {
-        return Arrays.stream(items).filter(inputStr::contains).count();
+        return Arrays.stream(items).map(item -> StringUtils.countMatches(inputStr, item)).reduce(0, Integer::sum);
+
     }
 
     private int getTextNodeStartPosition(TextNode startTextNode) {
